@@ -167,6 +167,8 @@ https://platzi.com/cursos/angular-avanzado/resuelve-problemas-comunes-de-prettie
 22. Migración al Application Builder de Angular
 https://platzi.com/cursos/angular-avanzado/migracion-al-application-builder-de-angu/
 
+ng buil
+
 https://angular.dev/tools/cli/builder
 
 Building Angular apps
