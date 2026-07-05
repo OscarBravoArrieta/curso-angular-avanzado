@@ -9,20 +9,33 @@ export const routes: Routes = [
         children: [
             {
                 path: '',
-                loadComponent: () => import('./domains/products/pages/list/list.component')
+                loadComponent: () =>
+                    import('./domains/products/pages/list/list.component'),
+            },
+            {
+                path: '',
+                loadComponent: () =>
+                    import('./domains/products/pages/list/list.component'),
+            },
+            {
+                path: 'category/:slug',
+                loadComponent: () =>
+                    import('./domains/products/pages/list/list.component'),
             },
             {
                 path: 'about',
-                loadComponent: () => import('./domains/info/pages/about/about.component')
+                loadComponent: () =>
+                    import('./domains/info/pages/about/about.component'),
             },
             {
-                path: 'product/:id',
-                loadComponent: () => import('./domains/products/pages/product-detail/product-detail.component')
-            }
-        ]
+                path: 'product/:slug',
+                loadComponent: () =>
+                    import('./domains/products/pages/product-detail/product-detail.component'),
+            },
+        ],
     },
     {
         path: '**',
-        component: NotFoundComponent
-    }
+        component: NotFoundComponent,
+    },
 ];

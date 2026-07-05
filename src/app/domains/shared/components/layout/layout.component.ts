@@ -6,8 +6,6 @@ import { HeaderComponent } from '@shared/components/header/header.component';
 @Component({
     selector: 'app-layout',
     imports: [CommonModule, HeaderComponent, RouterModule],
-    templateUrl: './layout.component.html'
+    templateUrl: './layout.component.html',
 })
-export class LayoutComponent {
-
-}
+export class LayoutComponent {}

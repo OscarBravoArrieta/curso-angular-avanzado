@@ -6,8 +6,6 @@ import { RouterLinkWithHref } from '@angular/router';
     selector: 'app-not-found',
     imports: [CommonModule, RouterLinkWithHref],
     templateUrl: './not-found.component.html',
-    styleUrls: ['./not-found.component.css']
+    styleUrls: ['./not-found.component.css'],
 })
-export class NotFoundComponent {
-
-}
+export class NotFoundComponent {}

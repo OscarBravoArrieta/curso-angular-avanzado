@@ -1,0 +1,182 @@
+
+Configuración de ESLint y Prettier en proyectos Angular
+https://platzi.com/cursos/angular-avanzado/implementa-eslint-para-codigo-limpio-en-angular/
+
+ 1. Clean up unused imports
+    As of version 19, Angular reports when a component's imports array contains symbols that aren't used in its template
+    Excute: ng generate @angular/core:cleanup-unused-imports
+
+  2. To implement Angular coding style guide:
+    ng add @angular-eslint/schematics
+
+    ng lint --fix: It is used to analyze your source code for syntax errors, structural flaws, and bad practices.
+
+    Install in vs Code extension ESLint
+
+Formateo de Código con Prettier y ESLint en Proyectos Angular
+https://platzi.com/cursos/angular-avanzado/optimiza-tu-codigo-con-prettier-en-angular/
+
+ 1. Prettier is an automatic code formatter. Its main function is to rewrite your source code according to predetermined and consistent rules.
+    npm install prettier -D
+     a. update packaje.json
+            ...
+            "scripts": {
+                "format": "prettier --write ."
+            }
+
+     the point (.) indicate all folder
+
+     b. To format all project, execute: npm run format
+
+     c. For ESLint and Prettier to work in harmony, it is necessary to install some additional packages:
+
+        npm install prettier-eslint eslint-config-prettier eslint-plugin-prettier -D
+
+        update: eslint.config.js
+
+     d. Make a file .prettierrc.json
+     {
+        "tabWidth": 2,
+        "useTabs": false,
+        "singleQuote": true,
+        "semi": true
+     }
+
+    ¿Cuál es la diferencia entre ESLint y Prettier?
+    Antes de sumergirnos en la implementación, es importante entender la distinción entre estas dos herramientas fundamentales:
+    ESLint: Se enfoca en analizar la calidad del código, identificando malas prácticas y problemas de accesibilidad. No está diseñado principalmente para formatear código.
+    Prettier: Es un formateador de código que establece un estilo consistente en todo el proyecto. Su objetivo es que todos los desarrolladores escriban código con el mismo formato, independientemente de sus preferencias personales.
+
+Configuración de Ambientes en Angular: Desarrollo y Producción
+https://platzi.com/cursos/angular-avanzado/gestiona-multiples-ambientes-de-desarrollo/
+
+    1 ng generate environments
+
+    2. Update tsconfig.json to configurate routes
+            "paths": {
+            "@shared/*": ["./src/app/domains/shared/*"],
+            "@products/*": ["./src/app/domains/products/*"],
+            "@info/*": ["./src/app/domains/info/*"],
+            "@environments/*": ["./src/environments/*"]
+        }
+
+Configuración y uso del ambiente de staging en Angular
+https://platzi.com/cursos/angular-avanzado/configura-entornos-staging-para-pruebas/
+
+    1 Create environment.stagin.ts file in environments folder
+    2. Update angular.json
+        projects > store > architect > build > configuration >
+
+    3. Ad the configuration
+        "staging": {
+            "fileReplacements": [
+                {
+                "replace": "src/environments/environment.ts",
+                "with": "src/environments/environment.staging.ts"
+                }
+            ]
+        },
+
+    4. projects > store > architect > serve >
+        "staging": {
+            "buildTarget": "store:build:staging"
+        },
+    5. Execute stagin environment: ng serve -c stagin
+
+
+
+7. Buenas prácticas con variables locales en Angular
+https://platzi.com/cursos/angular-avanzado/domina-la-nueva-directiva-let-en-angular/
+    variables inside template
+    @let data = product();
+
+8. Optimización de Imágenes en Angular con NG Optimizate Image
+https://platzi.com/cursos/angular-avanzado/optimiza-imagenes-para-mejor-rendimiento-en-angula/
+    inort in te component: NgOptimizedImage
+
+    In the html:
+    <div class="relative h-72">
+        <img
+            alt="ecommerce"
+            class="w-full object-cover object-center"
+            [fill]="true"
+            loading="lazy"  
+
+            [ngSrc]="cover()"
+            [width]="300"
+            [height]="300"
+        />
+    </div>
+
+9. Optimización de Rutas Amigables para SEO en Angular
+https://platzi.com/cursos/angular-avanzado/crea-urls-amigables-para-seo-en-angular/
+
+10. Reactividad en Angular: Migración a Input Signals
+https://platzi.com/cursos/angular-avanzado/implementa-input-signal-para-componentes-reactivos/
+
+11. Migración automática de @Input a signals en Angular
+https://platzi.com/cursos/angular-avanzado/migracion-automatica-de-input-a-signals/
+
+Para ejecución automática:
+
+ng generate @angular/core:signal-input-migration
+
+12. Migración de Outputs en Angular: De Decoradores a Funciones
+https://platzi.com/cursos/angular-avanzado/usa-la-nueva-output-function-para-eventos-en-angul/
+
+Para ejecución automática:
+
+ng generate @angular/core:output-migration
+
+13. linkedSignal en Angular: computed con set
+https://platzi.com/cursos/angular-avanzado/linkedsignal-en-angular-computed-con-set/
+
+14. Sincronización de Componentes en Angular con Model y Signals
+https://platzi.com/cursos/angular-avanzado/gestiona-formularios-con-model-signal/
+To sinchronize comunication  betwwen father and sons: model
+
+15. toSignal: Observables de RxJS como Signals
+https://platzi.com/cursos/angular-avanzado/tosignal-observables-de-rxjs-como-signal/
+
+16. Conversión de Observables a Signals en Angular con toSignal
+https://platzi.com/cursos/angular-avanzado/implementa-tosignal-en-componentes/
+
+17. Interoperabilidad de RXDS y Signals en Angular: Uso de RX Resourcers
+https://platzi.com/cursos/angular-avanzado/simplifica-rxjs-con-rxresource-en-angular/
+
+18. Manejo de Parámetros Reactivos con RX Resource en Angular
+https://platzi.com/cursos/angular-avanzado/maneja-recursos-con-parametros-usando-resource/
+
+
+19. Manejo de Promesas y Fetch en Angular sin RXJS
+https://platzi.com/cursos/angular-avanzado/optimiza-promises-con-resource-en-angular/
+
+Evaluar que es másc onveniente entre el uso de 
+import { rxResource } from '@angular/core/rxjs-interop';
+
+o el fetch nativo de javascript:
+
+const response = await fetch(`${environment.apiUrl}/api/v1/categories`)
+
+20. Reactividad en Angular: Uso de Signals para Consultas DOM
+https://platzi.com/cursos/angular-avanzado/crea-consultas-reactivas-con-signal-queries/
+
+21. Configuración de Prettier para HTML en Angular
+https://platzi.com/cursos/angular-avanzado/resuelve-problemas-comunes-de-prettier-en-angular/
+
+22. Migración al Application Builder de Angular
+https://platzi.com/cursos/angular-avanzado/migracion-al-application-builder-de-angu/
+
+https://angular.dev/tools/cli/builder
+
+Building Angular apps
+@angular/build:application	Builds an application with a client-side bundle, a Node server, and build-time prerendered routes with esbuild
+
+Review angular.json:
+ actual "builder": "@angular-devkit/build-angular:browser",
+
+ TO migrate a new buider:
+
+ ng update @angular/cli --name use-application-builder
+
+
