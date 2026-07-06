@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, ChangeDetectionStrategy } from '@angular/core';
 
 import { toSignal } from '@angular/core/rxjs-interop';
 
@@ -17,6 +17,7 @@ import { BehaviorSubject, delay, Subject } from 'rxjs';
         HighlightDirective,
         FormsModule,
     ],
+    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './about.component.html',
 })
 export default class AboutComponent {

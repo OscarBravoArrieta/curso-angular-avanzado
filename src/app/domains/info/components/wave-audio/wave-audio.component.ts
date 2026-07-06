@@ -5,6 +5,7 @@ import {
     AfterViewInit,
     input,
     viewChild,
+    ChangeDetectionStrategy,
 } from '@angular/core';
 
 import WaveSurfer from 'wavesurfer.js';
@@ -12,6 +13,7 @@ import WaveSurfer from 'wavesurfer.js';
 @Component({
     selector: 'app-wave-audio',
     imports: [],
+    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './wave-audio.component.html',
 })
 export class WaveAudioComponent implements AfterViewInit {

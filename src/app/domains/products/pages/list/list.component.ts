@@ -1,4 +1,10 @@
-import { Component, inject, input, resource } from '@angular/core';
+import {
+    Component,
+    inject,
+    input,
+    resource,
+    ChangeDetectionStrategy,
+} from '@angular/core';
 
 import { RouterLinkWithHref } from '@angular/router';
 import { ProductComponent } from '@products/components/product/product.component';
@@ -12,6 +18,7 @@ import { rxResource } from '@angular/core/rxjs-interop';
 @Component({
     selector: 'app-list',
     imports: [ProductComponent, RouterLinkWithHref],
+    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './list.component.html',
 })
 export default class ListComponent {

@@ -6,6 +6,7 @@ import {
     computed,
     input,
     linkedSignal,
+    ChangeDetectionStrategy,
 } from '@angular/core';
 import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { ProductService } from '@shared/services/product.service';
@@ -15,6 +16,7 @@ import { CartService } from '@shared/services/cart.service';
 @Component({
     selector: 'app-product-detail',
     imports: [CommonModule, NgOptimizedImage],
+    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './product-detail.component.html',
 })
 export default class ProductDetailComponent implements OnInit {

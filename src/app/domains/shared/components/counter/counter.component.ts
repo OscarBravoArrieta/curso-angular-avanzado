@@ -10,11 +10,13 @@ import {
     effect,
     computed,
     model,
+    ChangeDetectionStrategy,
 } from '@angular/core';
 
 @Component({
     selector: 'app-counter',
     imports: [],
+    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './counter.component.html',
 })
 export class CounterComponent

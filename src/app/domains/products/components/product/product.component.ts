@@ -1,4 +1,9 @@
-import { Component, input, output } from '@angular/core';
+import {
+    Component,
+    input,
+    output,
+    ChangeDetectionStrategy,
+} from '@angular/core';
 import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { RouterLinkWithHref } from '@angular/router';
 import { Product } from '@shared/models/product.model';
@@ -8,6 +13,7 @@ import { TimeAgoPipe } from '@shared/pipes/time-ago.pipe';
 @Component({
     selector: 'app-product',
     imports: [CommonModule, TimeAgoPipe, RouterLinkWithHref, NgOptimizedImage],
+    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './product.component.html',
 })
 export class ProductComponent {
