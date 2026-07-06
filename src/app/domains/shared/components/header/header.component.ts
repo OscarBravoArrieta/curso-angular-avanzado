@@ -1,17 +1,12 @@
 import { Component, inject, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { CartService } from '../../services/cart.service';
 import { RouterLinkWithHref, RouterLinkActive } from '@angular/router';
 import { SearchComponent } from '../search/search.component';
 
 @Component({
     selector: 'app-header',
-    imports: [
-        CommonModule,
-        RouterLinkWithHref,
-        RouterLinkActive,
-        SearchComponent,
-    ],
+    imports: [RouterLinkWithHref, RouterLinkActive, SearchComponent],
     templateUrl: './header.component.html',
 })
 export class HeaderComponent {
