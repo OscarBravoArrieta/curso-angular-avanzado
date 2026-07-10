@@ -1,8 +1,7 @@
 /* To learn more about this file see: https://angular.io/config/tsconfig. */
 {
     "compileOnSave": false,
-    "compilerOptions": {
-        "baseUrl": "./",
+    "compilerOptions": {       
         "outDir": "./dist/out-tsc",
         "forceConsistentCasingInFileNames": true,
         "esModuleInterop": true,
@@ -21,6 +20,7 @@
         "useDefineForClassFields": false,
         "paths": {
             "@shared/*": ["./src/app/domains/shared/*"],
+            "@app/*": ["./src/app/*"],
             "@products/*": ["./src/app/domains/products/*"],
             "@info/*": ["./src/app/domains/info/*"],
             "@environments/*": ["./src/environments/*"]

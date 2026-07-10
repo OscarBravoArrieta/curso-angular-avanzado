@@ -14,7 +14,7 @@ export class CategoryService {
         );
     }
 
-    async getAllPromise(): Promise<Category> {
+    async getAllPromise(): Promise<Category[]> {
         const response = await fetch(`${environment.apiUrl}/api/v1/categories`);
         const data = await response.json();
         return data;

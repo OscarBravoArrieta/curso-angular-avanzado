@@ -29,18 +29,30 @@ export default class ListComponent {
 
     //Evaluate the use of categoryResource and categoryResourceRx
 
-    categoryResource = rxResource({
-        loader: () => this.categoryService.getAll(),
+    // categoryResourceRx = rxResource({
+    //     loader: () => this.categoryService.getAll()
+    // });
+
+
+    categoryResource = resource({
+        loader: () => this.categoryService.getAllPromise()
     });
 
-    categoryResourceRx = resource({
-        loader: () => this.categoryService.getAllPromise(),
-    });
+    // categoryResourceRx = rxResource({
+    //     loader: () => this.categoryService.getAll(),
+    // });
+
+    // productsResource = rxResource({
+    //     request: () => ({ category_slug: this.slug() }),
+    //     loader: ({ request }) => this.productService.getProducts(request),
+    // });
 
     productsResource = rxResource({
-        request: () => ({ category_slug: this.slug() }),
-        loader: ({ request }) => this.productService.getProducts(request),
+        params: () => ({ category_slug: this.slug() }),  
+        stream: ({ params }) => this.productService.getProducts(params)
     });
+
+
 
     addToCart(product: Product) {
         this.cartService.addToCart(product);
