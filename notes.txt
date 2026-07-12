@@ -181,5 +181,11 @@ Review angular.json:
 
  ng update @angular/cli --name use-application-builder
 
+23. Server Side Rendering con Angular: Mejora Rendimiento y SEO
+https://platzi.com/cursos/angular-avanzado/implementa-server-side-rendering-ssr-en-angular/
+
+24. https://platzi.com/cursos/angular-avanzado/afternextrender-codigo-seguro-solo-en-el/
+afterNextRender: código seguro solo en el browser
+
 
 
