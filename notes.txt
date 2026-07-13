@@ -187,5 +187,12 @@ https://platzi.com/cursos/angular-avanzado/implementa-server-side-rendering-ssr-
 24. https://platzi.com/cursos/angular-avanzado/afternextrender-codigo-seguro-solo-en-el/
 afterNextRender: código seguro solo en el browser
 
+25. Geolocalización y APIs: Creando un Mapa de Tiendas Cercanas
+https://platzi.com/cursos/angular-avanzado/crea-paginas-de-ubicacion-optimizadas-en-angular/
+
+26. Pre-rendering en Angular con ng build
+https://platzi.com/cursos/angular-avanzado/pre-rendering-en-angular-con-ng-build/
+
+
 
 

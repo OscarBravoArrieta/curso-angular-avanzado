@@ -1,4 +1,4 @@
 export const environment = {
     production: true,
-    apiUrl: 'http://api.escuelas.co',
+    apiUrl: 'https://api.escuelajs.co',
 };
