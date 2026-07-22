@@ -1,17 +1,11 @@
-import {
-    Component,
-    inject,
-    signal,
-    OnInit,
-    computed,
-    input,
-    linkedSignal,
-    ChangeDetectionStrategy,
-} from '@angular/core';
+import {Component, inject, input, linkedSignal, ChangeDetectionStrategy, effect} from '@angular/core';
 import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { ProductService } from '@shared/services/product.service';
-import { Product } from '@shared/models/product.model';
 import { CartService } from '@shared/services/cart.service';
+import { Meta, Title } from '@angular/platform-browser';
+import { Product } from '@shared/models/product.model';
+import { rxResource } from '@angular/core/rxjs-interop';
+
 
 @Component({
     selector: 'app-product-detail',
@@ -19,14 +13,22 @@ import { CartService } from '@shared/services/cart.service';
     changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './product-detail.component.html',
 })
-export default class ProductDetailComponent implements OnInit {
-    readonly slug = input<string>();
-    $product = signal<Product | null>(null);
-    private productService = inject(ProductService);
-    private cartService = inject(CartService);
+export default class ProductDetailComponent {
+    readonly slug = input.required<string>();
+    
+    productRs = rxResource({
+
+        params: () => ({
+            slug: this.slug()
+        }),
+        stream: ({ params }) => {
+            return this.productService.getOneBySlug(params.slug);
+        }
+
+    })
 
     $cover = linkedSignal({
-        source: this.$product,
+        source: this.productRs.value,
         computation: (product, previousValue) => {
             if (product && product.images.length > 0) {
                 return product.images[0];
@@ -35,17 +37,25 @@ export default class ProductDetailComponent implements OnInit {
             return previousValue?.value;
         },
     });
+    
+    private productService = inject(ProductService);
+    private cartService = inject(CartService);
 
-    ngOnInit() {
-        const slug = this.slug();
+    titleService = inject(Title)
+    metaService = inject(Meta)
 
-        if (slug) {
-            this.productService.getOneBySlug(slug).subscribe({
-                next: (product) => {
-                    this.$product.set(product);
-                },
-            });
-        }
+    constructor(  private title: Title,  private meta: Meta) {
+       effect(() => {
+          const product = this.productRs.value()
+          if (product) {
+            this.titleService.setTitle(product.title)
+            this.metaService.updateTag({
+                name: 'description', 
+                content: product.description
+            })
+          }
+
+       })
     }
 
     changeCover(newImg: string) {
@@ -53,7 +63,7 @@ export default class ProductDetailComponent implements OnInit {
     }
 
     addToCart() {
-        const product = this.$product();
+        const product = this.productRs.value();
         if (product) {
             this.cartService.addToCart(product);
         }

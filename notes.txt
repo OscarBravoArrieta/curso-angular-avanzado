@@ -194,5 +194,13 @@ https://platzi.com/cursos/angular-avanzado/crea-paginas-de-ubicacion-optimizadas
 https://platzi.com/cursos/angular-avanzado/pre-rendering-en-angular-con-ng-build/
 
 
+27. Desplegando Angular SSR en Firebase
+https://platzi.com/cursos/angular-avanzado/desplegando-angular-ssr-en-firebase/
 
+app firebase hosting
+Necesitamos App Hosting.
 
+Poner en práctica con la aplicación de tienda vertual que hice.
+
+28. Generación de Meta Tags Dinámicos con Angular y Open
+https://platzi.com/cursos/angular-avanzado/optimiza-seo-con-titulos-y-metatags-efectivos/
