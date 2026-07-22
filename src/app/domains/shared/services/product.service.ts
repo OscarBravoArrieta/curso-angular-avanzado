@@ -36,7 +36,8 @@ export class ProductService {
     }
 
     getOneBySlug(slug: string) {
-        const url = `${environment.apiUrl}/api/v1/products/slug/${slug}`;
+        const url = `${environment.apiUrl}/api/v1/products/${slug}`;
+        console.log('url-> ',url)
         return this.http.get<Product>(url);
     }
 }
