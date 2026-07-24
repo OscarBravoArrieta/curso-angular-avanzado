@@ -2,9 +2,9 @@ import {Component, inject, input, linkedSignal, ChangeDetectionStrategy, effect}
 import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { ProductService } from '@shared/services/product.service';
 import { CartService } from '@shared/services/cart.service';
-import { Meta, Title } from '@angular/platform-browser';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { environment } from '@environments/environment';
+import { MetaTagsService } from '@shared/services/meta-tags.service';
 
 
 @Component({
@@ -39,38 +39,20 @@ export default class ProductDetailComponent {
     
     private productService = inject(ProductService);
     private cartService = inject(CartService);
+    private metaTagsService = inject(MetaTagsService)
 
-    titleService = inject(Title)
-    metaService = inject(Meta)
-
-    constructor(  private title: Title,  private meta: Meta) {
-       effect(() => {
-          const product = this.productRs.value()
-          if (product) {
-            this.titleService.setTitle(product.title)
-            this.metaService.updateTag({
-                name: 'description', 
-                content: product.description
-            })
-            this.metaService.updateTag({
-                property: 'og:title',
-                content: product.title
-            })
-            this.metaService.updateTag({
-                property: 'og:image',
-                content: product.images[0]
-            })
-            this.metaService.updateTag({
-                property: 'og:description',
-                content: product.description
-            })
-            this.metaService.updateTag({
-                property: 'og:description',
-                content: `${environment.domain}/product/${product.slug}`
-            })
-          }
-
-       })
+    constructor() {
+        effect(() => {
+            const product = this.productRs.value()
+            if (product) {
+                this.metaTagsService.updtaMetaTags({
+                    title: product.title,
+                    description: product.description,
+                    image: product.images[0],
+                    url: `${environment.domain}/product/${product.slug}`
+                })
+            }
+        })
     }
 
     changeCover(newImg: string) {
