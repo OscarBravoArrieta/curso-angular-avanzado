@@ -5,11 +5,12 @@ import { CartService } from '@shared/services/cart.service';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { environment } from '@environments/environment';
 import { MetaTagsService } from '@shared/services/meta-tags.service';
+import { RelatedComponent } from "../../components/related/related.component";
 
 
 @Component({
     selector: 'app-product-detail',
-    imports: [CommonModule, NgOptimizedImage],
+    imports: [CommonModule, NgOptimizedImage, RelatedComponent],
     changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './product-detail.component.html',
 })
