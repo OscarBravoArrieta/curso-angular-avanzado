@@ -204,3 +204,6 @@ Poner en práctica con la aplicación de tienda vertual que hice.
 
 28. Generación de Meta Tags Dinámicos con Angular y Open
 https://platzi.com/cursos/angular-avanzado/optimiza-seo-con-titulos-y-metatags-efectivos/
+
+29. Creación de MetaTags Dinámicos en Angular
+https://platzi.com/cursos/angular-avanzado/implementa-metatags-service-para-seo-en-angular/
