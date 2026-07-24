@@ -3,8 +3,8 @@ import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { ProductService } from '@shared/services/product.service';
 import { CartService } from '@shared/services/cart.service';
 import { Meta, Title } from '@angular/platform-browser';
-import { Product } from '@shared/models/product.model';
 import { rxResource } from '@angular/core/rxjs-interop';
+import { environment } from '@environments/environment';
 
 
 @Component({
@@ -14,10 +14,9 @@ import { rxResource } from '@angular/core/rxjs-interop';
     templateUrl: './product-detail.component.html',
 })
 export default class ProductDetailComponent {
-    readonly slug = input.required<string>();
-    
-    productRs = rxResource({
 
+    readonly slug = input.required<string>();    
+    productRs = rxResource({        
         params: () => ({
             slug: this.slug()
         }),
@@ -53,6 +52,22 @@ export default class ProductDetailComponent {
                 name: 'description', 
                 content: product.description
             })
+            this.metaService.updateTag({
+                property: 'og:title',
+                content: product.title
+            })
+            this.metaService.updateTag({
+                property: 'og:image',
+                content: product.images[0]
+            })
+            this.metaService.updateTag({
+                property: 'og:description',
+                content: product.description
+            })
+            this.metaService.updateTag({
+                property: 'og:description',
+                content: `${environment.domain}/product/${product.slug}`
+            })
           }
 
        })
@@ -62,7 +77,7 @@ export default class ProductDetailComponent {
         this.$cover.set(newImg);
     }
 
-    addToCart() {
+    addToCart() {        
         const product = this.productRs.value();
         if (product) {
             this.cartService.addToCart(product);
