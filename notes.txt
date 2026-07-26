@@ -1,51 +1,99 @@
+2. Clona y explora el proyecto base de Angular
+https://platzi.com/cursos/angular-avanzado/clona-y-explora-el-proyecto-base-de-angu/
 
-Configuración de ESLint y Prettier en proyectos Angular
+
+3. Configuración de ESLint y Prettier en proyectos Angular
 https://platzi.com/cursos/angular-avanzado/implementa-eslint-para-codigo-limpio-en-angular/
 
- 1. Clean up unused imports
-    As of version 19, Angular reports when a component's imports array contains symbols that aren't used in its template
-    Excute: ng generate @angular/core:cleanup-unused-imports
+    Formas para que se establezcan convenciones en el proyecto:
+         1. Linter: Se asegura que se estén siguiendo buenas prácticas en el código, buenas prácticas de seguridad.
+         2. Formateador: Se asegura que existan estándares en la manera de escribir el código.
 
-  2. To implement Angular coding style guide:
-    ng add @angular-eslint/schematics
+     Revisar la documentación: https://angular.dev/reference/migrations/cleanup-unused-imports
+ 
+        1. Clean up unused imports
+             As of version 19, Angular reports when a component's imports array contains symbols that aren't used in its template
+             Excute:
+             ng generate @angular/core:cleanup-unused-imports
 
-    ng lint --fix: It is used to analyze your source code for syntax errors, structural flaws, and bad practices.
+             Se usa para detectarr y remover importaciones que no se están usando y que por ende podíra agregar peso a la aplicación. Este es automático y ya lo trae angular por defecto. 
+             Normalmente en tros proyectos, en otros ecosistemas, se requiere agregar pluggins. Para llo se ejecuta el siguiente comoando:
+             Una vez ejecutado el comando, podríamos recurrir a gitHub para notar las diferencias
 
-    Install in vs Code extension ESLint
+         2. Angular coding style guide: https://angular.dev/style-guide
+             Se refiere a una serie de normas y buenas prácticas que se deberían seguir en los equipos de desarrollo con angular. Una forma de que todos los miembros del equipo adopten estas práctica, 
+             es automatizándolo:
 
-Formateo de Código con Prettier y ESLint en Proyectos Angular
-https://platzi.com/cursos/angular-avanzado/optimiza-tu-codigo-con-prettier-en-angular/
+     To implement Angular coding style guide:
+     ng add @angular-eslint/schematics
 
- 1. Prettier is an automatic code formatter. Its main function is to rewrite your source code according to predetermined and consistent rules.
-    npm install prettier -D
-     a. update packaje.json
+     eslint, no solo asegura las buenas prácticas de Anglar, sino tambien de typeScript y de javaScript
+     Al agregar eslint, se genera un arvhivo llamado eslint.config.js
+
+     ng lint
+     Genera la lista de inconsistencias en el código, detectando las malas prácticas y errores
+
+     ng lint --fix: It is used to analyze your source code for syntax errors, structural flaws, and bad practices anf fix it
+
+     Install in vs Code extension ESLint
+
+     Eslint tambien detecta problemas en el HTML, por jemplo un imagen que tiene configurado un evento click, pero a las imágenes no es aconsejable dprogramarle este tipo de eventos.
+     para solicionarlo se coloca un tabindex = "0" con el fin de poder navegar sobre el con el teclado, role = "button"
+
+
+4. Prettier y ESLint sin conflictos en Angular
+https://platzi.com/cursos/angular-avanzado/prettier-y-eslint-sin-conflictos-en-angu/
+
+     Prettier se encarga de estabilizar o estandarizar el formato. Nos ayuda a establecer un solo formato de código para todo el proyecto.
+     Prettier is an automatic code formatter. Its main function is to rewrite your source code according to predetermined and consistent rules.
+
+     Para instalarlo: npm install prettier -D
+     -D significa que es una dependencia que se usará solo en tiempo de desarrollo
+
+     Se debe hacer la siguiente configuración:
+
+          update packaje.json
             ...
             "scripts": {
                 "format": "prettier --write ."
             }
 
-     the point (.) indicate all folder
+        --write se utiliza para que haga automáticamente las correcciones, este modificador es similar al --fix del lint
+        El punto(.) que se encuentra después del --write, indica todas las carpetas del proyecto
 
-     b. To format all project, execute: npm run format
+     Para automatizarlo: To format all project, execute: npm run format
 
-     c. For ESLint and Prettier to work in harmony, it is necessary to install some additional packages:
+     Al ejecutar este comando, el código se configura teneiendo en cuenta el estandar de buenas prácticas.
 
-        npm install prettier-eslint eslint-config-prettier eslint-plugin-prettier -D
+     En todo caso también se pueden implementar configuraciones persoanlidas, mediante el uso de un Configuration file. Para ello se crea en la raiz del proyecto el archivo: .prettierrc.json
 
-        update: eslint.config.js
+     Ejemplo:
 
-     d. Make a file .prettierrc.json
+     Make a file .prettierrc.json
      {
-        "tabWidth": 2,
-        "useTabs": false,
-        "singleQuote": true,
-        "semi": true
+         "tabWidth": 2,
+         "useTabs": false,
+         "singleQuote": true,
+         "semi": true
      }
 
-    ¿Cuál es la diferencia entre ESLint y Prettier?
-    Antes de sumergirnos en la implementación, es importante entender la distinción entre estas dos herramientas fundamentales:
-    ESLint: Se enfoca en analizar la calidad del código, identificando malas prácticas y problemas de accesibilidad. No está diseñado principalmente para formatear código.
-    Prettier: Es un formateador de código que establece un estilo consistente en todo el proyecto. Su objetivo es que todos los desarrolladores escriban código con el mismo formato, independientemente de sus preferencias personales.
+     Prittier y eslint, son proyectos aparte, por eso para que trabajen en armonía, se requiere hacer la siguiente instalación:
+        
+     npm install prettier-eslint eslint-config-prettier eslint-plugin-prettier -D
+
+     update: eslint.config.js:
+     const prettierRules = require("eslint-plugin-prettier/recommended");
+
+     ¿Cuál es la diferencia entre ESLint y Prettier?
+     Antes de sumergirnos en la implementación, es importante entender la distinción entre estas dos herramientas fundamentales:
+     ESLint: Se enfoca en analizar la calidad del código, identificando malas prácticas y problemas de accesibilidad. No está diseñado principalmente para formatear código.
+     Prettier: Es un formateador de código que establece un estilo consistente en todo el proyecto. Su objetivo es que todos los desarrolladores escriban código con el mismo formato, independientemente de sus preferencias personales.
+
+
+
+
+
+     
 
 Configuración de Ambientes en Angular: Desarrollo y Producción
 https://platzi.com/cursos/angular-avanzado/gestiona-multiples-ambientes-de-desarrollo/
