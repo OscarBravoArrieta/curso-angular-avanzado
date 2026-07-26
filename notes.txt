@@ -91,16 +91,23 @@ https://platzi.com/cursos/angular-avanzado/prettier-y-eslint-sin-conflictos-en-a
 
 
 
+5. Manejo de environments en Angular
+https://platzi.com/cursos/angular-avanzado/manejo-de-environments-en-angular/
 
+     Mediante el manjo de ambientes en Angular, podemos tener algunas configraciones, incluso algunas llaves que solo funcionen en producción y no en desarrollo y viceversa.
+     Configuración de Ambientes en Angular: Desarrollo y Producción. Para declarar rutas de API, 
 
-     
+     1. ng generate environments
+     Esto crea la carpeta environments, con dos archivos, uno para desarrollo y otro para producción
+     se recomiendo solo colocar el domiio sin sub-paths y sin slash al final. Ej:
+     'https://api.escuelajs.co'
 
-Configuración de Ambientes en Angular: Desarrollo y Producción
-https://platzi.com/cursos/angular-avanzado/gestiona-multiples-ambientes-de-desarrollo/
+     Angular puede detectar si debe tomar el archivo environment.development.ts y/o environment.ts, dependiendo: si se usa el comando ng serve y/o ng build
 
-    1 ng generate environments
+     Una buena práctica para crea una especie de accesos directos para hacer las impotaciones es, estblecerlos en tsconfigjson:
 
-    2. Update tsconfig.json to configurate routes
+          
+     2. Update tsconfig.json to configurate routes
             "paths": {
             "@shared/*": ["./src/app/domains/shared/*"],
             "@products/*": ["./src/app/domains/products/*"],
@@ -108,39 +115,63 @@ https://platzi.com/cursos/angular-avanzado/gestiona-multiples-ambientes-de-desar
             "@environments/*": ["./src/environments/*"]
         }
 
-Configuración y uso del ambiente de staging en Angular
-https://platzi.com/cursos/angular-avanzado/configura-entornos-staging-para-pruebas/
+6. Ambiente de staging en Angular paso a paso
+https://platzi.com/cursos/angular-avanzado/ambiente-de-staging-en-angular-paso-a-pa/
 
-    1 Create environment.stagin.ts file in environments folder
-    2. Update angular.json
-        projects > store > architect > build > configuration >
+     El ambiente de stagin, es u paso antes de liberer una versión a producción que te permite validar features con stakeholders, QA y product managers antes de liberar al usuario final
 
-    3. Ad the configuration
-        "staging": {
-            "fileReplacements": [
-                {
-                "replace": "src/environments/environment.ts",
-                "with": "src/environments/environment.staging.ts"
-                }
-            ]
-        },
+     Para crear un ambiente de stagin: 
 
-    4. projects > store > architect > serve >
-        "staging": {
-            "buildTarget": "store:build:staging"
-        },
-    5. Execute stagin environment: ng serve -c stagin
+     1 Create environment.stagin.ts file in environments folder
+     2. Update angular.json
+         projects > store > architect > build > configuration >
+
+     3. Ad the configuration
+         "staging": {
+             "fileReplacements": [
+                 {
+                 "replace": "src/environments/environment.ts",
+                 "with": "src/environments/environment.staging.ts"
+                 }
+             ]
+         },
+
+     4. Una vez termine en de build, Tambien es bueno hacerlo en el de serve, puede ser que se requira correr un ng serve, se debe tener la posibilidad de modificar y correr ese ambiente de staging
+
+     projects > store > architect > serve >
+         "staging": {
+             "buildTarget": "store:build:staging"
+         },
+
+     5. Para correre el ambiente de staging, execute environment: ng serve -c stagin
+
+     6. Para hacer build de la aplicación pero en ambiente de stagin: ng build -c staging
 
 
 
-7. Buenas prácticas con variables locales en Angular
-https://platzi.com/cursos/angular-avanzado/domina-la-nueva-directiva-let-en-angular/
-    variables inside template
-    @let data = product();
+7. Variables locales con @let en Angular
+https://platzi.com/cursos/angular-avanzado/variables-locales-con-let-en-angular/
 
-8. Optimización de Imágenes en Angular con NG Optimizate Image
-https://platzi.com/cursos/angular-avanzado/optimiza-imagenes-para-mejor-rendimiento-en-angula/
-    inort in te component: NgOptimizedImage
+     Angular incorporó las variables locales con @let en los templates, una característica que mejora la legibilidad del código y evita ejecuciones repetidas de signals. Esta práctica mejora el rendimiento
+
+     Es importante tener en cuenta, que los valores de las variables que se declaren en el template, sean derivadas de datos o variables que vienen del componente, y no asignarles valores directamente en el template.
+     Otro aspecto importante para no abusar de este tipo de variables, es evitar tratar de hacer demasiados cálculos y lógica en el template.
+     
+     variables inside template
+     @let data = product();
+
+
+
+
+
+
+
+
+
+8. Lazy loading de imágenes con ngSrc en Angular
+https://platzi.com/cursos/angular-avanzado/lazy-loading-de-imagenes-con-ngsrc-en-an/
+
+    imort in te component: NgOptimizedImage
 
     In the html:
     <div class="relative h-72">
