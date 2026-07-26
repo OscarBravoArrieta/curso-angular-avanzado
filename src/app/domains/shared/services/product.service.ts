@@ -40,4 +40,9 @@ export class ProductService {
         console.log('url-> ',url)
         return this.http.get<Product>(url);
     }
+
+    getRelatedProducts(slug: string) {
+        const url = `${environment.apiUrl}/api/v1/products/slug/${slug}/related`;
+        return this.http.get<Product[]>(url)
+    }
 }

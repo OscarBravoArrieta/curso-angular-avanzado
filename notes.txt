@@ -255,3 +255,37 @@ https://platzi.com/cursos/angular-avanzado/optimiza-seo-con-titulos-y-metatags-e
 
 29. Creación de MetaTags Dinámicos en Angular
 https://platzi.com/cursos/angular-avanzado/implementa-metatags-service-para-seo-en-angular/
+
+30. Proceso de Hydration y Event Replay en Angular
+https://platzi.com/cursos/angular-avanzado/mejora-ux-con-hydration-y-eventreplay-en-angular/
+
+EN app.config.ts...
+provideClientHydration(withEventReplay())
+
+31. Productos relacionados con RxResource en Angular
+https://platzi.com/cursos/angular-avanzado/productos-relacionados-con-rxresource-en/
+
+32. Carga diferida de componentes en Angular para mejorar rendimiento
+https://platzi.com/cursos/angular-avanzado/optimiza-rendimiento-con-defer-en-angular/
+
+    @defer (on viewport) {
+        <app-related [slug]="data.slug"/>
+    }@placeholder {
+        <p>Loading...</p>
+    }
+
+
+33. Optimización de Incremental Hydration en Angular
+https://platzi.com/cursos/angular-avanzado/implementa-hydration-incremental-para-mejor-ux/
+EN app.config.ts...
+provideClientHydration(withEventReplay(), withNoIncrementalHydration())
+
+Para hidratar solo los elementos con los que el usuario está interactuando
+
+34. Configuración de Server Routing en Angular
+https://platzi.com/cursos/angular-avanzado/optimiza-navegacion-con-server-routing-en-angular/
+
+RenderMode.Server
+RenderMode.Client
+RenderMode.Prerender
+Para habilitar server routing, se crea el archivo app.routes.server.ts y en angular.json se configura la propiedad outputMode con el valor server.
