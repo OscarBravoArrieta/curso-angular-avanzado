@@ -160,35 +160,66 @@ https://platzi.com/cursos/angular-avanzado/variables-locales-con-let-en-angular/
      variables inside template
      @let data = product();
 
-
-
-
-
-
-
-
-
 8. Lazy loading de imágenes con ngSrc en Angular
 https://platzi.com/cursos/angular-avanzado/lazy-loading-de-imagenes-con-ngsrc-en-an/
 
-    imort in te component: NgOptimizedImage
+     Optimizar imágenes en Angular es uno de los pasos más rentables para mejorar el rendimiento de tu sitio web. 
+     La directiva NgOptimizeImage y su atributo ngSrc te permiten reducir tiempos de carga, evitar saltos visuales molestos y aplicar lazy loading sin escribir lógica adicional. 
+     Esta guía te muestra cómo implementarla paso a paso en un store real.
 
-    In the html:
-    <div class="relative h-72">
-        <img
-            alt="ecommerce"
-            class="w-full object-cover object-center"
-            [fill]="true"
-            loading="lazy"  
+     Antes de poder optimizar la carga de nuestras imágenes, es importante conocer los Web Vitales, básicamente son tres métricas que miden:
 
-            [ngSrc]="cover()"
-            [width]="300"
-            [height]="300"
-        />
-    </div>
+     Los Web Vitals son tres métricas que miden la experiencia real de un usuario en tu sitio: el loading (qué tan rápido carga la página), el INP (la interactividad) y el CLS o Cumulative Layout Shift (la estabilidad visual). 
+     Al usar ngSrc impactas directamente dos de estas métricas: el rendimiento de carga y el CLS.
+     El CLS es esa molestia que sientes cuando intentas hacer clic en un botón y, de repente, un banner se carga arriba y te empuja todo el contenido. Terminas dándole yes cuando querías no. 
+     Eso es justamente lo que la estabilidad visual busca evitar. Angular ofrece la dirctiva NgOptimizedImage, con la que se logra optimizar la estabiliad visual
 
-9. Optimización de Rutas Amigables para SEO en Angular
-https://platzi.com/cursos/angular-avanzado/crea-urls-amigables-para-seo-en-angular/
+     imort in te component: NgOptimizedImage
+     [ngSrc]="cover()"
+
+     ¿Cómo implementar ngSrc en un componente Angular?
+
+     El primer paso es importar la directiva desde @angular/common. Una vez importada, basta con cambiar src por ngSrc en tu etiqueta <img>. 
+     En el ejemplo, se aplica tanto en el componente products-detail como en el
+
+     ¿Por qué necesito definir width y height?
+
+     html <img ngSrc="ruta/imagen.jpg" width="80" height="80" />
+     Se debe dar un alto y un ancho predefinido, 
+     Para mantener estabilidad visual, Angular necesita conocer las dimensiones del espacio que la imagen ocupará. Así reserva el cuadro y lo rellena cuando la imagen termine de descargarse, sin mover el resto del layout.
+     Pero dado que alto y alto van a cambiar alterando el tamaño de la imagen, dependiendo de si es movile o desktop, 
+     Esto se puede resolver con el atributo [fill]="true", sin embargo tambien esto causa un inconveniete,
+     porque siempre va a tomar el tamaño del elemento padre. Por esto, conviente encerrar la imagen en un div, que tenga la calse relative: <div class="relative h-72"></div>
+
+     Estas clases de tailwin tambien ayudan a dar mucha estabilidad a la imagen:   class="w-full object-cover object-center"
+
+     loading= "lazy", hace que las imágenes se carguen, si y solo si, el usuario hace scroll hacia abajo.
+
+     In the html:
+
+     <div class="relative h-72">
+         <img
+             alt="ecommerce"
+             class="w-full object-cover object-center"
+             [fill]="true"
+              loading="lazy"  
+             [ngSrc]="cover()"
+             [width]="300"
+             loading= "lazy"
+             [height]="300"
+         />
+     </div>
+
+
+
+
+
+
+9. URLs amigables para SEO en Angular
+https://platzi.com/cursos/angular-avanzado/urls-amigables-para-seo-en-angular/
+
+
+
 
 10. Reactividad en Angular: Migración a Input Signals
 https://platzi.com/cursos/angular-avanzado/implementa-input-signal-para-componentes-reactivos/
