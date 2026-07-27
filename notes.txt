@@ -210,19 +210,65 @@ https://platzi.com/cursos/angular-avanzado/lazy-loading-de-imagenes-con-ngsrc-en
          />
      </div>
 
-
-
-
-
-
 9. URLs amigables para SEO en Angular
 https://platzi.com/cursos/angular-avanzado/urls-amigables-para-seo-en-angular/
+
+     Rutas amigables, hace referencia a urls que sean fáciles de leer, intentando no usar id o tokens etcetera.
+
+     Para la ruta de categorías por ejemplo:
+
+     1. Duplicamos la url, y a la segunda url le colocamos /:slug
+
+     
+        {
+            path: '',
+            loadComponent: () =>
+                import('./domains/products/pages/list/list.component'),
+        },
+        {
+            path: 'category/:slug',
+            loadComponent: () =>
+                import('./domains/products/pages/list/list.component'),
+        },
+    
+     2. En list component 
+        reemplazar 
+        readonly category_id? = input<string>();
+        por
+        readonly slug? = input<string>();
+
+     3. En product.service.ts, en el método getProducts
+
+        getProducts(params: {
+            category_id?: string;
+            slug?: string;
+            category_slug?: string;
+        })
+
+     4. En list.component
+
+        provate getProducts() {
+
+            this.productService.getProducts({category_slug: this.slug})
+        }
+
+     5. En list.component.html
+
+        routerLink="/category/{{ category.slug }}">{{ category.name }}</a
+
+
+
 
 
 
 
 10. Reactividad en Angular: Migración a Input Signals
 https://platzi.com/cursos/angular-avanzado/implementa-input-signal-para-componentes-reactivos/
+
+
+
+
+
 
 11. Migración automática de @Input a signals en Angular
 https://platzi.com/cursos/angular-avanzado/migracion-automatica-de-input-a-signals/
