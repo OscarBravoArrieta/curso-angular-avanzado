@@ -256,26 +256,69 @@ https://platzi.com/cursos/angular-avanzado/urls-amigables-para-seo-en-angular/
 
         routerLink="/category/{{ category.slug }}">{{ category.name }}</a
 
-
-
-
-
-
-
 10. Reactividad en Angular: Migración a Input Signals
 https://platzi.com/cursos/angular-avanzado/implementa-input-signal-para-componentes-reactivos/
 
+     Los inputs Signals en Angular son una API moderna basada eb funciones, que reemplaza al decorador clásico @Input.
+     Los input signals, fueron introducidos en Angular, para cambiar la forma en que los componentes reciben datos, estos trasnforman los datos
+     de entrada en señales reactivas de solo lectura, por tano se optimiza sustancialmente la detección de cambios, haciéndola más precisa y eficiente.
+
+     Para utilizarlos, debes importar la función input desde @angular/core.
+
+     A diferencia de los decoradores tradicionales, el valor se lee ejecutando la propiedad como una función (ej. miPropiedad())
+
+     ngOnChanges() Se puede utilizar para leer loc cambios de un input dignal, sin embargo, lo ideal para la nueva reactividad de angular, es a través de effect:
+
+     doubleDurationA = signal(0);
+     doubleDurationB = computed(() => this.duration() * 2);
 
 
+     constructor() {
+        effect(() => {
+           const duration = this.duration()
+        })
 
+        effect(() => {
+            this.duration()
+            this.doubleDUrationA.set(this.duration() * 2 )
+        })
+     }
 
+     Otro aspecto a tener en cuenta, es que ngOnChange(), es un solo método para leer todos los valores, por lo que toca buscar el valor a leer, dentro de un objeto, mientas que con effect
+     se puede hacer uno a uno, es decir, de forma granular.
+
+     Los Input Signals transforman la forma en que Angular detecta los cambios, pasando de una revisión general a una reactividad granular. 
+     Imagina que en lugar de revisar toda tu casa para ver si dejaste una ventana abierta, tuvieras un sensor que te avisa exactamente cuál ventana se abrió. 
+     Esto mejora drásticamente el rendimiento de tu aplicación, especialmente en proyectos pesados como dashboards o aplicaciones con Server-Side Rendering (SSR). 
+     Al dejar atrás el decorador @Input(), adoptas un enfoque mucho más declarativo. Angular ya no tiene que adivinar qué componente necesita actualizarse; 
+     el Signal le avisa directamente. 
+     Esto se traduce en interfaces más rápidas, menor consumo de memoria y una experiencia de usuario mucho más fluida sin importar el tamaño de tu proyecto.
 
 11. Migración automática de @Input a signals en Angular
 https://platzi.com/cursos/angular-avanzado/migracion-automatica-de-input-a-signals/
 
-Para ejecución automática:
+ Para ejecución automática:
 
-ng generate @angular/core:signal-input-migration
+ ng generate @angular/core:signal-input-migration
+
+ ? Which directory do you want to migrate? (./)
+
+ Para hacer la migración en toda la aplicación, se deja el punto (.)
+ ó se puede especificar una carpeta: ./src/module/products
+
+ Alias en los input signals
+
+ $duration = input.required<number>({alias:'duration'})
+
+ Esto de los alias, puede ser detectado por EsLint como un error. Se puede exceptuar ese error asi:
+
+ "@angular-eslint/no-inpur-rename": "off",
+
+
+
+
+
+
 
 12. Migración de Outputs en Angular: De Decoradores a Funciones
 https://platzi.com/cursos/angular-avanzado/usa-la-nueva-output-function-para-eventos-en-angul/

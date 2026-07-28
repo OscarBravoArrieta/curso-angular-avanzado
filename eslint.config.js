@@ -33,6 +33,7 @@ module.exports = defineConfig([
                     style: "kebab-case",
                 },
             ],
+            "@angular-eslint/no-inpur-rename": "off",
         },
     },
     {
