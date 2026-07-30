@@ -339,20 +339,70 @@ https://platzi.com/cursos/angular-avanzado/usa-la-nueva-output-function-para-eve
  Con motivo de la nueva reactividad, angular ha empezado a sacar nuevas primitivas reactivas para empezar a manejar el  flujo y ciertos escenarios que podiamos tener en nuestro código,
  uno de ellos es el linkedSignals
 
-
-
-
-
-
-
 13. linkedSignal en Angular: computed con set
 https://platzi.com/cursos/angular-avanzado/linkedsignal-en-angular-computed-con-set/
 
+ Angular ha estado creando ciertas primitivas fundacionales:
 
-signals
-effect
-computed
-linkedSignal
+ 1. Signals: Para declarar un signal de forma explícita y declarativa desde cero.
+ 2. computed: Permite declarar un nuevo signal a partir y dependiendo de otro.
+ 3. effect: Lee los cambios de un signal y basado en ello, podemos ejecutar funciones 
+
+ linkedSignal: 
+ 
+ Entre otras cosas, viene a contrarrestar algunas reglas no escrita en el mundo de Angular,
+ Cómo es el caso evitar el uso de effect
+
+ cover = signal('')
+
+ if(product.images.length > 0) {
+    this.cover.set(product.images[0])
+ }
+
+ Para convertirlo a computed:
+
+ cover = computed(() => {
+    return this.product()?.images[0] ?? ''
+ })
+ 
+ De esta fomrma es más declarativo, sabemos que cover se calcula a partir de producto
+ Cada vez que producto sufra cambios, se vuele a recalcular cover.
+
+ DESVENTAJA DEL computed: no se le puede hacer un set, la unica forma de que cover cambie es que producto cambie.
+ En fin, los computed no se pueden modificar.
+
+ Estas desventajas, se pueden resolver con la directiva linkedSignal, la cual es igual a un computed, pero si deja hacer set:
+
+ cover = linkedSignal(() => {
+    const product = this.product()
+    if(product && product.images.length > 0) {
+        return product.images[0]
+    }
+ })
+
+ Con linkedSignal, puedo tener las bodades del computed y adempas poder modificarlo 
+
+ otra forma de usar linkedSignal, es haciendo uso del proviousVv
+ $cover = linkedSigal({
+    source: this.$product,
+    computation: (value, previusValue) => {
+        if(product && product.images.length > 0) {
+            return product.images[0]
+        }
+        return previousValue?.value
+    }
+ })
+
+
+(pediente respuesta ¿Cual es la respuesta correcta a esta pregunta, considerando que tanto computed como linkedSignal, ambas se actualizan cuando cambia el signal del que dependen?.)
+
+
+
+
+
+
+
+
 
 14. Sincronización de Componentes en Angular con Model y Signals
 https://platzi.com/cursos/angular-avanzado/gestiona-formularios-con-model-signal/
