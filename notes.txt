@@ -314,21 +314,45 @@ https://platzi.com/cursos/angular-avanzado/migracion-automatica-de-input-a-signa
 
  "@angular-eslint/no-inpur-rename": "off",
 
-
-
-
-
-
-
 12. Migración de Outputs en Angular: De Decoradores a Funciones
 https://platzi.com/cursos/angular-avanzado/usa-la-nueva-output-function-para-eventos-en-angul/
 
-Para ejecución automática:
+ Los output, tambien cambiaron en su API, pero no son un signal, simplemente es una convención para seguir manejándolo ya no en forma de decorator, sino, en forma de funciones asi como el 
+ input y es el equipo de angular alineándolos para que ya todos sigamos una misma línea, es decir, en vez de decorators, funciones, ya que técnicamente el output sigue siendo una función y no un signal.
+ 
+ Antes: ->  @Output() addToCart = new EventEmiter();
 
-ng generate @angular/core:output-migration
+ Ahora: -> addToCart = output<Product>()
+
+ Si se requiere devolver nada, se especifica void: Ahora: -> addToCart = output<void>()
+
+ Para ejecución automática:
+
+ ng generate @angular/core:output-migration
+
+ Para hacer la migración en toda la aplicación, se deja el punto (.)
+ ó se puede especificar una carpeta: ./src/module/products
+
+ ESTAS DOS API'S: SIGNALS INPUTS O OUTPUTS, ES LA FORMA EN LA QUE COMUNICAMOS PADERES E HIJOS. SI UN COMPONENTE PADRE QUIERE ENVIARLE INFORMACIÓN A SU HIJO, LO HACE A TRAVÉS DE INPUT.
+ SI UN HIJO QUIERE ENVIARLE INFORMACIÓN A SU PADRE, LO HACE A TRAVÉS DE UN OUTPUT.
+ 
+ Con motivo de la nueva reactividad, angular ha empezado a sacar nuevas primitivas reactivas para empezar a manejar el  flujo y ciertos escenarios que podiamos tener en nuestro código,
+ uno de ellos es el linkedSignals
+
+
+
+
+
+
 
 13. linkedSignal en Angular: computed con set
 https://platzi.com/cursos/angular-avanzado/linkedsignal-en-angular-computed-con-set/
+
+
+signals
+effect
+computed
+linkedSignal
 
 14. Sincronización de Componentes en Angular con Model y Signals
 https://platzi.com/cursos/angular-avanzado/gestiona-formularios-con-model-signal/
