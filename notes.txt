@@ -396,17 +396,20 @@ https://platzi.com/cursos/angular-avanzado/linkedsignal-en-angular-computed-con-
 
 (pediente respuesta ¿Cual es la respuesta correcta a esta pregunta, considerando que tanto computed como linkedSignal, ambas se actualizan cuando cambia el signal del que dependen?.)
 
-
-
-
-
-
-
-
-
 14. Sincronización de Componentes en Angular con Model y Signals
 https://platzi.com/cursos/angular-avanzado/gestiona-formularios-con-model-signal/
-To sinchronize comunication  betwwen father and sons: model
+
+La comunicación entre componentes en Angular es fundamental para construir aplicaciones robustas y escalables. 
+Mientras que los inputs y outputs son mecanismos tradicionales para esta comunicación, 
+Angular ofrece herramientas más avanzadas como el model, que simplifica significativamente la sincronización bidireccional entre componentes padre e hijo. 
+Veamos cómo implementar esta poderosa característica y cómo puede mejorar nuestro flujo de desarrollo.
+
+¿Cómo funciona la comunicación entre componentes en Angular?
+
+La comunicación entre componentes padre e hijo en Angular tradicionalmente se realiza mediante inputs y outputs. 
+Sin embargo, existen situaciones donde necesitamos una sincronización bidireccional más directa. 
+Aquí es donde entra en juego el model, una característica que combina la funcionalidad de input y output en una sola API.
+
 
 15. toSignal: Observables de RxJS como Signals
 https://platzi.com/cursos/angular-avanzado/tosignal-observables-de-rxjs-como-signal/
