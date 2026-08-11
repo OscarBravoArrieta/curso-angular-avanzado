@@ -411,11 +411,70 @@ Sin embargo, existen situaciones donde necesitamos una sincronización bidirecci
 Aquí es donde entra en juego el model, una característica que combina la funcionalidad de input y output en una sola API.
 
 
+
 15. toSignal: Observables de RxJS como Signals
 https://platzi.com/cursos/angular-avanzado/tosignal-observables-de-rxjs-como-signal/
 
+Además de RxJs, Hay una forma también interesante de agregar interoperabibidad y uyilizar signal como patrón reactivo, sin perder todo el trabajo
+o todo el código que ya teniamos implementado, esa funcionalidad se llama toSignal
+
+
+    obsWithInit$ = new BehaviorSubject<string>('Init value');
+    $withInit = toSignal(this.obsWithInit$, {
+        requireSync: true,
+    });
+
+ Importante. POr convención, un signo de $ al final indica que se trata de un observable. Un signo de peso al principio indica que es un tiSignal
+
+ NORMALMENTE UN BehaviorSubject, tiene un valor inicial.
+ Si tu observable tiene un valor inicial, requireSync: true, es sincrono. Significa que $withInit va a obtener su valor inicial, solo hsata que el observable se lo entregue.
+
+ Cuando no tiene valor inicial, sería Subject y hay que darle el valor
+
+    obsWithoutInit$ = new Subject<string>();
+
+    $withoutInit = toSignal(this.obsWithoutInit$.pipe(delay(3000)), {
+        initialValue: '----',
+    });
+
 16. Conversión de Observables a Signals en Angular con toSignal
 https://platzi.com/cursos/angular-avanzado/implementa-tosignal-en-componentes/
+
+    
+
+    provate getCategories() {
+        this.categoryService.getAll().subscribe({
+            next: data=> {
+                this.categories.ser(data)
+            }
+        })
+    }
+
+    
+
+ En el fragmento de código anterior, sabemos que getAll(), es un observable. Es posible pasarlo a signal de la siguiente manera:
+
+ categories = toSignal(this.categoryService.getAll())
+
+ Se requiere saber si getAll tenga un valor inicial, mientras se conecta y se hace efectiva la petición y se hace el fetchig de los valores:
+
+ $categories = toSignal(this.categoryService.getAll(), {
+    initialValue: []
+ })
+
+ Esto hace que no sea necesario capturar el valor en ngOnInit()
+
+ Desventajas de toSignal:
+
+ No se le puede hacer un set.
+ this.$categories.set([]) //Esto daría error
+ Además no se le puede establecer un estado de loading
+
+ 
+
+
+
+
 
 17. Interoperabilidad de RXDS y Signals en Angular: Uso de RX Resourcers
 https://platzi.com/cursos/angular-avanzado/simplifica-rxjs-con-rxresource-en-angular/
