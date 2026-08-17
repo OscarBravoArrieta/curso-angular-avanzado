@@ -437,22 +437,23 @@ o todo el código que ya teniamos implementado, esa funcionalidad se llama toSig
         initialValue: '----',
     });
 
-16. Conversión de Observables a Signals en Angular con toSignal
-https://platzi.com/cursos/angular-avanzado/implementa-tosignal-en-componentes/
+ 16. Conversión de Observables a Signals en Angular con toSignal
 
-    
+ https://platzi.com/cursos/angular-avanzado/implementa-tosignal-en-componentes/
 
-    provate getCategories() {
-        this.categoryService.getAll().subscribe({
-            next: data=> {
-                this.categories.ser(data)
-            }
-        })
-    }
+ La función toSignal, tiene la particularidad de parsear observables y volverlos signals
 
-    
+ En el fragmento de código anterior, sabemos que getAll(), es un observable
 
- En el fragmento de código anterior, sabemos que getAll(), es un observable. Es posible pasarlo a signal de la siguiente manera:
+     provate getCategories() {
+         this.categoryService.getAll().subscribe({
+             next: data=> {
+                 this.categories.ser(data)
+             }
+         })
+     }
+
+ Es posible pasarlo a signal de la siguiente manera:
 
  categories = toSignal(this.categoryService.getAll())
 
@@ -470,21 +471,135 @@ https://platzi.com/cursos/angular-avanzado/implementa-tosignal-en-componentes/
  this.$categories.set([]) //Esto daría error
  Además no se le puede establecer un estado de loading
 
- 
+ 17. Interoperabilidad de RXDS y Signals en Angular: Uso de RX Resourcers
+ https://platzi.com/cursos/angular-avanzado/simplifica-rxjs-con-rxresource-en-angular/
+
+ Hemos visto que podemos tener interoperatividad entre rxjs y signals, con las desventajas que  
+ No se le puede hacer un set.
+ this.$categories.set([]) //Esto daría error
+ Además no se le puede establecer un estado de loading o saber si el fetchig generó error o no.
+
+ Esto requiere que el manejo de loading, fectchig requieren manejo de valiables bolleanas para manejo del estado. Los posibles errores en el fecthig requieren codificación de un fracgmento de 
+ código de error
+
+ ...
+
+ error: error => {
+    this.errorProducts.set(error.message)
+    this.loadingProducts.set(false)
+ }
+
+ RxResource, permite condensar el manejo de todas la situaciones anteriores. Básicamente esta pensado para manejar signals y tener interoperatividad con rxjs de todo lo que es asincrono como el fetching del producto
+ En este caso, el fetching del producto es asincrono, ir a la api, obtener sus datos, manejar su estado de loading. Todo esto hace parte del estado de asincronía que se puede condensar en rxResource
+
+ Una vez imortado vamos a hacer los siguiente: en vez de tener varios estados como:
+
+ products = signals<Product[]>([])
+ loadingProducts = signals(false)
+ errorProducts = signals('')
+
+ Lo sintetizaremos como se muestra a continuación:
+
+
+     productsResource = rxResource({
+        params: () => ({ category_slug: this.slug() }),  
+        stream: ({ params }) => this.productService.getProducts(params)
+     });
+
+     en params se obtien el resultado del observable y prácticamente lo convierte en signal, además es posible hacerle "set" y también es posible obtener unas variables derivadas con las que se puede saber si presentó 
+     error en el fetchig, o si está en estado loading. Todo lo anterior genera gran comoodidad para el menjo de la asincrinía sin crear variables adicionales.
+
+     RX Resource está pensado para manejar procesos asíncronos y convierte automáticamente cualquier observable en un signal.
+
+     Este recurso ahora contiene todos los estados derivados que necesitamos:
+
+     categoriesResource.value: contiene los datos obtenidos
+     categoriesResource.loading: indica si la operación está en curso
+     categoriesResource.error: contiene información sobre errores
+     categoriesResource.status: indica el estado actual del recurso
+     Además, RX Resource nos proporciona métodos útiles:
+
+     categoriesResource.set(): para actualizar manualmente los datos
+     categoriesResource.reload(): para volver a ejecutar la operación asíncrona
+     categoriesResource.reset(): para restablecer el recurso a su estado inicial
 
 
 
 
 
-17. Interoperabilidad de RXDS y Signals en Angular: Uso de RX Resourcers
-https://platzi.com/cursos/angular-avanzado/simplifica-rxjs-con-rxresource-en-angular/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 18. Manejo de Parámetros Reactivos con RX Resource en Angular
 https://platzi.com/cursos/angular-avanzado/maneja-recursos-con-parametros-usando-resource/
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 19. Manejo de Promesas y Fetch en Angular sin RXJS
 https://platzi.com/cursos/angular-avanzado/optimiza-promises-con-resource-en-angular/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 Evaluar que es másc onveniente entre el uso de 
 import { rxResource } from '@angular/core/rxjs-interop';
