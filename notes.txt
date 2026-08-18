@@ -523,25 +523,72 @@ o todo el código que ya teniamos implementado, esa funcionalidad se llama toSig
      categoriesResource.reload(): para volver a ejecutar la operación asíncrona
      categoriesResource.reset(): para restablecer el recurso a su estado inicial
 
+ 18. Manejo de Parámetros Reactivos con RX Resource en Angular
+ https://platzi.com/cursos/angular-avanzado/maneja-recursos-con-parametros-usando-resource/
 
+     Cada vez que un input cambia, se va a ejecutar getProducts(), debido a que está en el evento ngOnChanges()
 
+     readonly slug = input<string>();
 
+     ngOnChanges() {
+         this.getProducts()
+     }
 
+     Por ende, cada vez que el Parámetro slug cambia, se ejecutará getProducts.
 
+     La forma de indicarle a rxResource que actualice la data cada vez que in input sufra cambios, es la siguiente:
 
+     productsResource; () => {
+         request: () => {
+             return {
+                 category_slug: this.slug(),
+             }
+         }
+         loader: (request) => this.productsService.getProducts(request),
+     }
 
+     Utilizando javaScript moderno:
 
+     productsResource = rxResource({
+         request: () => ({ category_slug: this.slug()}),
+         loader: ({request}) => this.productService.getPrducts(request)
+     })
+     
+     Con esto, ya podríamos prescindir del evento ngOnChange()
+     En angular 20 se realiza de la siguiente manera:
 
+     productsResource = rxResource({
+         params: () => ({ category_slug: this.slug() }),  
+         stream: ({ params }) => this.productService.getProducts(params)
+     });
 
+ 19. Manejo de Promesas y Fetch en Angular sin RXJS
+ https://platzi.com/cursos/angular-avanzado/optimiza-promises-con-resource-en-angular/
 
+ Angular nos da estas nuevas posibilidades como toSignal rxResource para seguir trabajando con el código que ya tiene obsevables.
 
+ De todas maneras, Angular quiere dejar rxJs como opcional, dando la posibilidad tambien de seguir utiolizando promesas, como se muestra a continuación:
 
+     async getAllPromise(): Promise<Category[]> {
+        const response = await fetch(`${environment.apiUrl}/api/v1/categories`);
+        const data = await response.json();
+        return data;
+     }
 
+ Con esto último, ya no se utilizaría HttpClient, puesto que esta es la forma nativa de trabajar.
 
+ La forma de implementarlo, es la siguiente:
 
+      categoryResource = resource({
+         loader: () => this.categoryService.getAllPromise()
+     });
 
+ Evaluar que es másc onveniente entre el uso de 
+ import { rxResource } from '@angular/core/rxjs-interop';
 
+ o el fetch nativo de javascript:
 
+ const response = await fetch(`${environment.apiUrl}/api/v1/categories`)
 
 
 
@@ -552,61 +599,7 @@ o todo el código que ya teniamos implementado, esa funcionalidad se llama toSig
 
 
 
-
-
-18. Manejo de Parámetros Reactivos con RX Resource en Angular
-https://platzi.com/cursos/angular-avanzado/maneja-recursos-con-parametros-usando-resource/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-19. Manejo de Promesas y Fetch en Angular sin RXJS
-https://platzi.com/cursos/angular-avanzado/optimiza-promises-con-resource-en-angular/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Evaluar que es másc onveniente entre el uso de 
-import { rxResource } from '@angular/core/rxjs-interop';
-
-o el fetch nativo de javascript:
-
-const response = await fetch(`${environment.apiUrl}/api/v1/categories`)
+ 
 
 20. Reactividad en Angular: Uso de Signals para Consultas DOM
 https://platzi.com/cursos/angular-avanzado/crea-consultas-reactivas-con-signal-queries/
