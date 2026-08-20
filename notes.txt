@@ -2,7 +2,7 @@
 https://platzi.com/cursos/angular-avanzado/clona-y-explora-el-proyecto-base-de-angu/
 
 
-3. Configuración de ESLint y Prettier en proyectos Angular
+3. Configuración de ESlint y Prettier en proyectos Angular
 https://platzi.com/cursos/angular-avanzado/implementa-eslint-para-codigo-limpio-en-angular/
 
     Formas para que se establezcan convenciones en el proyecto:
@@ -16,8 +16,8 @@ https://platzi.com/cursos/angular-avanzado/implementa-eslint-para-codigo-limpio-
              Excute:
              ng generate @angular/core:cleanup-unused-imports
 
-             Se usa para detectarr y remover importaciones que no se están usando y que por ende podíra agregar peso a la aplicación. Este es automático y ya lo trae angular por defecto. 
-             Normalmente en tros proyectos, en otros ecosistemas, se requiere agregar pluggins. Para llo se ejecuta el siguiente comoando:
+             Se usa para detectar y remover importaciones que no se están usando y que por ende podían agregar peso a la aplicación. Este es automático y ya lo trae angular por defecto. 
+             Normalmente en otros proyectos, en otros ecosistemas, se requiere agregar pluggins. Para ello se ejecuta el anterior comando:
              Una vez ejecutado el comando, podríamos recurrir a gitHub para notar las diferencias
 
          2. Angular coding style guide: https://angular.dev/style-guide
@@ -27,7 +27,7 @@ https://platzi.com/cursos/angular-avanzado/implementa-eslint-para-codigo-limpio-
      To implement Angular coding style guide:
      ng add @angular-eslint/schematics
 
-     eslint, no solo asegura las buenas prácticas de Anglar, sino tambien de typeScript y de javaScript
+     eslint, no solo asegura las buenas prácticas de Angular, sino también de typeScript y de javaScript
      Al agregar eslint, se genera un arvhivo llamado eslint.config.js
 
      ng lint
@@ -37,8 +37,8 @@ https://platzi.com/cursos/angular-avanzado/implementa-eslint-para-codigo-limpio-
 
      Install in vs Code extension ESLint
 
-     Eslint tambien detecta problemas en el HTML, por jemplo un imagen que tiene configurado un evento click, pero a las imágenes no es aconsejable dprogramarle este tipo de eventos.
-     para solicionarlo se coloca un tabindex = "0" con el fin de poder navegar sobre el con el teclado, role = "button"
+     Eslint tambien detecta problemas en el HTML, por ejemplo un imagen que tiene configurado un evento click, pero a las imágenes no es aconsejable programarle este tipo de eventos.
+     para solucionarlo se coloca un tabindex = "0" con el fin de poder navegar sobre el con el teclado, role = "button"
 
 
 4. Prettier y ESLint sin conflictos en Angular
@@ -77,7 +77,7 @@ https://platzi.com/cursos/angular-avanzado/prettier-y-eslint-sin-conflictos-en-a
          "semi": true
      }
 
-     Prittier y eslint, son proyectos aparte, por eso para que trabajen en armonía, se requiere hacer la siguiente instalación:
+     Prittier y eslint, son proyectos independientes el u no del otro, por eso para que trabajen en armonía, se requiere hacer la siguiente instalación:
         
      npm install prettier-eslint eslint-config-prettier eslint-plugin-prettier -D
 
@@ -104,7 +104,7 @@ https://platzi.com/cursos/angular-avanzado/manejo-de-environments-en-angular/
 
      Angular puede detectar si debe tomar el archivo environment.development.ts y/o environment.ts, dependiendo: si se usa el comando ng serve y/o ng build
 
-     Una buena práctica para crea una especie de accesos directos para hacer las impotaciones es, estblecerlos en tsconfigjson:
+     Una buena práctica para crear una especie de accesos directos para hacer las impotaciones es, estblecerlos en tsconfigjson:
 
           
      2. Update tsconfig.json to configurate routes
@@ -118,7 +118,7 @@ https://platzi.com/cursos/angular-avanzado/manejo-de-environments-en-angular/
 6. Ambiente de staging en Angular paso a paso
 https://platzi.com/cursos/angular-avanzado/ambiente-de-staging-en-angular-paso-a-pa/
 
-     El ambiente de stagin, es u paso antes de liberer una versión a producción que te permite validar features con stakeholders, QA y product managers antes de liberar al usuario final
+     El ambiente de stagin, es un paso antes de liberer una versión a producción que te permite validar features con stakeholders, QA y product managers antes de liberar al usuario final
 
      Para crear un ambiente de stagin: 
 
@@ -590,6 +590,81 @@ o todo el código que ya teniamos implementado, esa funcionalidad se llama toSig
 
  const response = await fetch(`${environment.apiUrl}/api/v1/categories`)
 
+ 20. Reactividad en Angular: Uso de Signals para Consultas DOM
+ https://platzi.com/cursos/angular-avanzado/crea-consultas-reactivas-con-signal-queries/
+
+ Asi com en javaScript nativo, usamos GetElementById, angular tambien posee herramientas para hacer queries al DOM
+
+ viewChild, contentChild y viewChildren, pueden ser usados para preguntarle a angular cuales son los  hijos de un determinado elemento en el DOM,
+ y poder hacer referencia a estos elementos hijos.
+
+ Con la nueva reactividad de angular, podemos tamnbién hacer estas consultas pero con signals.
+
+ En el componente wave-audio.component, estamos usando la libreria de terceros
+ import WaveSurfer from 'wavesurfer.js';
+
+ Se utiliza para poder dibujar las ondas.
+
+ Para que esta librería pueda hacer su efeecto, requiere dos parámetros:
+ La URL del audio y el elemento del DOM, en donde se renderizará
+
+
+    url: this.audioUrl(),
+    container: this.$wavContainerRef()?.nativeElement,
+
+    Debe existir entonces, un elemento con un nombre: #wave
+
+    <div>
+        <div #wave></div>
+        <button (click)="playPause()">
+            @if (isPlaying()) {
+                <span>Pause</span>
+            } @else {
+                Play
+            }
+        </button>
+    </div>
+
+ Para obtener el elemento, usando signals:
+ $wavContainerRef = viewChild.required<ElementRef<HTMLDivElement>>('wave');
+
+ 21. Configuración de Prettier para HTML en Angular
+ https://platzi.com/cursos/angular-avanzado/resuelve-problemas-comunes-de-prettier-en-angular/
+
+ ng lint --fix
+
+ Está generando error, que hace referencia al index principal. En realidad, no sabemos si el error se está generando
+ en el html normal, o el htmel que parsea de angular. 
+
+ La solución es especificarle a prettier que el html normal no lo tome como un template de Angular, sino, como un html sencillo
+
+ Actualizar prettierrc.json
+
+ {
+    "tabWidth":2,
+    "useTabs": false,
+    "singleQuote": true,
+    "semi": true,
+    "bracketSpacing": true,
+    "arrowsParents": "avoid",
+    "trailingComma": true,
+    "bracketSameLine": true,
+    "printWidth": 80,
+    "overrrides":[
+        "files": "*.html",
+        "options": {
+            "parser": "html"
+        },
+        {
+            "files": ".component.html",
+            "options":{
+                "parser": "angular"
+            }
+        }
+    ] 
+ }
+
+ Cualquier componente de angular se parseará como de angular, 
 
 
 
@@ -599,13 +674,20 @@ o todo el código que ya teniamos implementado, esa funcionalidad se llama toSig
 
 
 
- 
 
-20. Reactividad en Angular: Uso de Signals para Consultas DOM
-https://platzi.com/cursos/angular-avanzado/crea-consultas-reactivas-con-signal-queries/
 
-21. Configuración de Prettier para HTML en Angular
-https://platzi.com/cursos/angular-avanzado/resuelve-problemas-comunes-de-prettier-en-angular/
+
+
+
+
+
+
+
+
+
+
+
+
 
 22. Migración al Application Builder de Angular
 https://platzi.com/cursos/angular-avanzado/migracion-al-application-builder-de-angu/
@@ -684,3 +766,11 @@ RenderMode.Server
 RenderMode.Client
 RenderMode.Prerender
 Para habilitar server routing, se crea el archivo app.routes.server.ts y en angular.json se configura la propiedad outputMode con el valor server.
+
+
+
+
+
+
+ Angular 20: 3 Optimizaciones de Performance que DEBES Implementar
+ https://www.youtube.com/watch?v=pOZzzdXgx-o&t=290s
