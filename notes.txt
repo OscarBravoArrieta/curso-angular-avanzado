@@ -666,45 +666,76 @@ o todo el código que ya teniamos implementado, esa funcionalidad se llama toSig
 
  Cualquier componente de angular se parseará como de angular, 
 
+ 22. Migración al Application Builder de Angular
+ https://platzi.com/cursos/angular-avanzado/migracion-al-application-builder-de-angu/
+
+ Entendiendo y aplicando SSR en proyectos de Angular, lo cual genera gran rendiiento y además lo hace amigable a motores 
+ de búsqueda para facilitar que el contenido sea encontrado. Además angular está implementando técnicas basadas en signals para lograr
+ detectar que elementos están cambiando.
+
+ Para aplicar todas estas ventajas de angular, necesitamos utilizar los nuevos builders de angular. La documentación al respecto, se encuentra en 
+ https://angular.dev/tools/cli/builder 
+
+ Building Angular apps
+
+ a) @angular-devkit/build-angular:application	Builds an application with a client-side bundle, a Node server, and build-time prerendered routes with esbuild
+ Este builder está enfocado a características de ssr y detección de cambios. Además, tiene las dos clases de render: client y server. Es el mas recomendado.
+
+ b) @angular-devkit/build-angular:browser-esbuild
+ Este genera un client-side, más no realiza ssr
+
+ c) @angular-devkit/build-angular:browser
+ Es para mantener la retrocompatibilidad, sobre todo cuando se quire mantener a webpack como builder
+
+ d) @angular-devkit/build-angular:ng-packagr
 
 
+ Nota: a partir de de la versión browser-esbuild, se utiliza esbuild que es un mejor transpilador que webpack.
+ esbuild está hecho en go. EL de application tambien usa esbuild.
 
+ En general, el más recomendable es application, porque maneja client-side render, server side render y esbuild
 
+ 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-22. Migración al Application Builder de Angular
-https://platzi.com/cursos/angular-avanzado/migracion-al-application-builder-de-angu/
-
-ng buil
-
-https://angular.dev/tools/cli/builder
-
-Building Angular apps
-@angular/build:application	Builds an application with a client-side bundle, a Node server, and build-time prerendered routes with esbuild
-
-Review angular.json:
+ Review angular.json:
  actual "builder": "@angular-devkit/build-angular:browser",
+
+ ng build
 
  TO migrate a new buider:
 
  ng update @angular/cli --name use-application-builder
+ 
+ nuevamente ng build
+
+ Cuando se configura application, ya no esta basado en webpack, sino, en esbuild, por ende debe ser más rápido.
+
+ Además en ng build, crea una nueva carpeta llamada store/browser en la que se encuentra el index.html
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 23. Server Side Rendering con Angular: Mejora Rendimiento y SEO
 https://platzi.com/cursos/angular-avanzado/implementa-server-side-rendering-ssr-en-angular/
