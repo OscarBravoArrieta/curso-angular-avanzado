@@ -256,7 +256,7 @@ https://platzi.com/cursos/angular-avanzado/urls-amigables-para-seo-en-angular/
 
         routerLink="/category/{{ category.slug }}">{{ category.name }}</a
 
-10. Reactividad en Angular: Migración a Input Signals
+Reactividad en Angular: Migración a Input Signals
 https://platzi.com/cursos/angular-avanzado/implementa-input-signal-para-componentes-reactivos/
 
      Los inputs Signals en Angular son una API moderna basada eb funciones, que reemplaza al decorador clásico @Input.
@@ -712,6 +712,45 @@ o todo el código que ya teniamos implementado, esa funcionalidad se llama toSig
 
  Además en ng build, crea una nueva carpeta llamada store/browser en la que se encuentra el index.html
  
+ 23. Server Side Rendering con Angular: Mejora Rendimiento y SEO
+ https://platzi.com/cursos/angular-avanzado/implementa-server-side-rendering-ssr-en-angular/
+
+ SSR: hace que el renderizado de nuestra aplicación se realice de lado el servidor, más no desde el brouser del cliente,
+ Esto implica que debemos habilitar node.js o algún compilador o algún runtime de javascript.
+
+ Ventajas:
+ - Performance
+ - Mejor Rendimiento
+ - Mejorar SEO lo que significa que nuestro sitio se optimizará para motores de búsqueda
+
+ Para agregar SSR 
+ ng add @angular/ssr
+
+ Esto modifica:
+
+ - angular.json:
+    "prerender": true
+
+ - package.json
+    "server:ssr:store": "node dist/store/server/server.mjs"
+    "express": "4.18.2"
+
+ Conviene actualizar app.config -> provideHttpClient(withFetch()),
+
+ 24. afterNextRender: código seguro solo en el browser
+ https://platzi.com/cursos/angular-avanzado/afternextrender-codigo-seguro-solo-en-el/
+
+ Hay aplicaciones tales como geolocalización, conectarse a bluetooth que solo corren en el navegador y no tienen contexto en el seridor,
+ por lo tanto hay que especificar que hay partes de la plicación que se renderizarn desde el servidor y otras desde el navegador.
+ 
+ Esto hace que cambie la forma de renderizar:
+
+ detro del constructor, ejecuta afterNextRender
+ constructor(){
+    afterNextRender: código seguro solo en el browser
+
+ }
+ 
 
 
 
@@ -724,24 +763,6 @@ o todo el código que ya teniamos implementado, esa funcionalidad se llama toSig
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-23. Server Side Rendering con Angular: Mejora Rendimiento y SEO
-https://platzi.com/cursos/angular-avanzado/implementa-server-side-rendering-ssr-en-angular/
-
-24. https://platzi.com/cursos/angular-avanzado/afternextrender-codigo-seguro-solo-en-el/
-afterNextRender: código seguro solo en el browser
 
 25. Geolocalización y APIs: Creando un Mapa de Tiendas Cercanas
 https://platzi.com/cursos/angular-avanzado/crea-paginas-de-ubicacion-optimizadas-en-angular/
@@ -803,5 +824,19 @@ Para habilitar server routing, se crea el archivo app.routes.server.ts y en angu
 
 
 
- Angular 20: 3 Optimizaciones de Performance que DEBES Implementar
+ Angular 20: Optimizaciones de Performance que DEBES Implementar
  https://www.youtube.com/watch?v=pOZzzdXgx-o&t=290s
+ 
+ En app.config
+ - provideZoneChangeDetection()
+   En aquellos componentes que escuchan señales, uno manda y uno o mas escuchan, solamente esos destinatarios se actualizan y ningún otro.
+   
+ - provideHttpClient(withFetch())
+   Permite que se pueda detectar el progreso de las peticiones. Es util cuando quieres mostrar por ejemplo una barra de progreso al momento que se hace una petición.
+   
+ -  provideClientHydration(withEventReplay(), withNoIncrementalHydration())
+  
+	Aplica cuando se usa ssr, porque al usar ssr, todo se manda desde el servidor. Permite que el usuario pueda ir interactuando con la págino, incluso si no se ha cargado del todo. Para ello va almacenando los 
+	clicks en un buffer. Al usarlo con incrementalHydration, solo se va actualizado primordialmente los elementos de la página con los que el usuario interactuó
+
+ 
