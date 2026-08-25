@@ -751,6 +751,53 @@ o todo el código que ya teniamos implementado, esa funcionalidad se llama toSig
 
  }
  
+ 25. Geolocalización y APIs: Creando un Mapa de Tiendas Cercanas
+ https://platzi.com/cursos/angular-avanzado/crea-paginas-de-ubicacion-optimizadas-en-angular/
+
+     constructor() {
+
+        afterNextRender(() => {
+            navigator.geolocation.getCurrentPosition(position => {
+                console.log(position)
+                const origin = `${position.coords.latitude}, ${position.coords.longitude}`
+                this.$origin.set(origin)
+            })
+        })
+
+    }
+
+ 26. Pre-rendering en Angular con ng build
+ https://platzi.com/cursos/angular-avanzado/pre-rendering-en-angular-con-ng-build/
+
+ Prerendering ó Static generation site o sitios estáticos.
+
+ Una forma de hacerlo, es utilizando ng build. Es distinto cuando lo haces en SSR que en caliente va al server, lo construye 
+ y la devuelve o en el browser, que la construye pero de lado del browser.
+
+ en el archivo angular.json, encontraremos el parámetro prerender
+
+ prerender: {
+    "discoverRoutes": false,
+    "routesFile": "routes.txt"
+ }
+ 
+
+ Se debe crear el archivo routes.txt, al mismo nivel de angular.json. En él especificaremos las rutas
+ que queremos que se prerenderizen:
+ 
+ Contenido del archivo:
+ --------------------
+ 
+ /about
+
+ --------------------
+
+
+ Si estás en Angular 20: la nueva forma de hacer Prerendering es más fácil. Solo se usa Prerender, Server o Client. Dependiendo de la naturaleza de la ruta. Ejemplo:
+ {
+     path: 'about', // This page is static, so we prerender it (SSG)
+     renderMode: RenderMode.Prerender,
+ },
 
 
 
@@ -762,13 +809,6 @@ o todo el código que ya teniamos implementado, esa funcionalidad se llama toSig
 
 
 
-
-
-25. Geolocalización y APIs: Creando un Mapa de Tiendas Cercanas
-https://platzi.com/cursos/angular-avanzado/crea-paginas-de-ubicacion-optimizadas-en-angular/
-
-26. Pre-rendering en Angular con ng build
-https://platzi.com/cursos/angular-avanzado/pre-rendering-en-angular-con-ng-build/
 
 
 27. Desplegando Angular SSR en Firebase
