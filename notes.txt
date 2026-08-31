@@ -564,6 +564,19 @@ o todo el código que ya teniamos implementado, esa funcionalidad se llama toSig
 
  19. Manejo de Promesas y Fetch en Angular sin RXJS
  https://platzi.com/cursos/angular-avanzado/optimiza-promises-con-resource-en-angular/
+ La evolución de Angular hacia un enfoque más flexible en el manejo de la reactividad está transformando la forma en que desarrollamos aplicaciones. Con la introducción de Signals y Resources, Angular nos ofrece alternativas al tradicional patrón de Observables de RxJS, permitiendo a los equipos de desarrollo elegir las herramientas que mejor se adapten a sus necesidades y preferencias. Esta libertad de elección representa un cambio significativo en la filosofía del framework, orientado a reducir la curva de aprendizaje y proporcionar mayor flexibilidad.
+
+¿Cómo trabajar con promesas en Angular moderno?
+
+Angular está evolucionando para hacer que RxJS sea opcional en lugar de obligatorio. Esto significa que ahora podemos elegir entre seguir utilizando Observables o migrar hacia un enfoque basado en promesas, más familiar para desarrolladores JavaScript. Esta flexibilidad permite a los equipos tomar decisiones conscientes sobre las herramientas que desean utilizar en sus proyectos.
+
+Para implementar un enfoque basado en promesas, podemos modificar nuestros servicios para utilizar el método fetch nativo de JavaScript en lugar del HttpClient de Angular:
+
+getAll(): Promise<Category[]> {
+  return fetch('url/to/categories')
+    .then(response => response.json())
+    .then(data => data);
+}
 
  Angular nos da estas nuevas posibilidades como toSignal rxResource para seguir trabajando con el código que ya tiene obsevables.
 
@@ -574,6 +587,17 @@ o todo el código que ya teniamos implementado, esa funcionalidad se llama toSig
         const data = await response.json();
         return data;
      }
+
+
+Este enfoque resulta más intuitivo para desarrolladores que están familiarizados con JavaScript moderno pero no necesariamente con el paradigma de programación reactiva que propone RxJS.
+
+Transición de RxResource a Resource
+
+Cuando trabajamos con promesas en lugar de Observables, necesitamos adaptar la forma en que consumimos estos datos en nuestros componentes. Angular proporciona dos herramientas principales:
+
+    RxResource: Para trabajar con Observables de RxJS
+    Resource: Para trabajar con Promesas
+
 
  Con esto último, ya no se utilizaría HttpClient, puesto que esta es la forma nativa de trabajar.
 
@@ -589,6 +613,25 @@ o todo el código que ya teniamos implementado, esa funcionalidad se llama toSig
  o el fetch nativo de javascript:
 
  const response = await fetch(`${environment.apiUrl}/api/v1/categories`)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
  20. Reactividad en Angular: Uso de Signals para Consultas DOM
  https://platzi.com/cursos/angular-avanzado/crea-consultas-reactivas-con-signal-queries/
