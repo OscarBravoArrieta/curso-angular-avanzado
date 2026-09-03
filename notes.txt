@@ -614,25 +614,6 @@ Cuando trabajamos con promesas en lugar de Observables, necesitamos adaptar la f
 
  const response = await fetch(`${environment.apiUrl}/api/v1/categories`)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
  20. Reactividad en Angular: Uso de Signals para Consultas DOM
  https://platzi.com/cursos/angular-avanzado/crea-consultas-reactivas-con-signal-queries/
 
