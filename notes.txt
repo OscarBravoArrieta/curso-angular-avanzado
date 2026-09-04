@@ -692,7 +692,7 @@ Cuando trabajamos con promesas en lugar de Observables, necesitamos adaptar la f
 
  22. Migración al Application Builder de Angular
  https://platzi.com/cursos/angular-avanzado/migracion-al-application-builder-de-angu/
-
+ 
  Entendiendo y aplicando SSR en proyectos de Angular, lo cual genera gran rendiiento y además lo hace amigable a motores 
  de búsqueda para facilitar que el contenido sea encontrado. Además angular está implementando técnicas basadas en signals para lograr
  detectar que elementos están cambiando.
@@ -735,7 +735,7 @@ Cuando trabajamos con promesas en lugar de Observables, necesitamos adaptar la f
  Cuando se configura application, ya no esta basado en webpack, sino, en esbuild, por ende debe ser más rápido.
 
  Además en ng build, crea una nueva carpeta llamada store/browser en la que se encuentra el index.html
- 
+
  23. Server Side Rendering con Angular: Mejora Rendimiento y SEO
  https://platzi.com/cursos/angular-avanzado/implementa-server-side-rendering-ssr-en-angular/
 
@@ -823,25 +823,69 @@ Cuando trabajamos con promesas en lugar de Observables, necesitamos adaptar la f
      renderMode: RenderMode.Prerender,
  },
 
+ 27. Desplegando Angular SSR en Firebase
+ https://platzi.com/cursos/angular-avanzado/desplegando-angular-ssr-en-firebase/
+
+ app firebase hosting
+ Necesitamos App Hosting.
+
+ Desplegar una aplicación Angular con server-side rendering requiere un servidor que ejecute Node.js, y Firebase App Hosting de Google Cloud te permite hacerlo en pocos clics sin montar infraestructura desde cero. Esta guía es para desarrolladores Angular que ya tienen SSR funcionando en local y necesitan llevarlo a producción.
+ ¿Por qué necesitas un servidor Node.js para SSR?
+ Cuando tu aplicación pasa de static site generation a server-side rendering, ya no basta con servir archivos estáticos desde un CDN. El navegador no es suficiente: ahora tu aplicación necesita ejecutar JavaScript en el servidor para renderizar HTML antes de enviarlo al cliente.
+ Nosotros usamos Express y Node.js, así que el entorno mínimo es un runtime de Node. Existen alternativas como Bun o Cloudflare Workers, pero requieren más configuración. Para empezar, lo clásico y confiable sigue siendo Node.
+ En el mercado hay muchos proveedores que te dan un servidor Node listo: DigitalOcean, Amazon, Google Cloud. La diferencia es cuánto trabajo de infraestructura quieres asumir tú o tu equipo de DevOps.
+ ¿Qué es Firebase App Hosting? Es un producto nuevo de Firebase que despliega aplicaciones full-stack con SSR sobre Google Cloud. Soporta Next.js y Angular, y se diferencia del Firebase Hosting tradicional, que solo sirve archivos estáticos.
+ ¿Cómo configurar Firebase App Hosting paso a paso?
+ La configuración inicial vive en console.firebase.com [03:30]. Creas un proyecto nuevo, decides si activas Google Analytics y esperas a que se aliste el entorno. Firebase es una suite amplia: bases de datos, app links, configuration, storage de archivos y más. Funciona como backend as a service.
+ Una vez dentro del proyecto, abres la sección App Hosting (no confundir con el Hosting clásico de archivos estáticos).
+ ¿App Hosting está en el plan gratuito?
+ No. A diferencia de otros servicios de Firebase, App Hosting solo está disponible en planes pagos por consumo, porque mantiene un servidor Node.js encendido para renderizar [05:50]. El costo es bajo, pero existe.
+ Al actualizar el proyecto, vinculas una cuenta de facturación. Aquí hay un detalle importante: puedes definir un tope de presupuesto para evitar facturas inesperadas, algo común en plataformas como Firebase o Amazon cuando los servicios no se configuran bien.
+ ¿Cómo eliges la región y el repositorio?
+ Elige la región más cercana a tus usuarios. Si tu audiencia está en Estados Unidos, despliega en US. Si está en Asia o Europa, ajusta en consecuencia.
+ Luego conectas tu repositorio de GitHub. Vas a necesitar:
+
+    Permisos sobre el repositorio que quieres desplegar.
+    Una rama específica que App Hosting va a observar.
+    La automatización de deployments en cada push a esa rama.
+
+ Si trabajas en una organización, coordina con tu technical lead o equipo de DevOps para los permisos.
+ ¿Por qué crear una rama production en lugar de usar main?
+ El flujo de ramas marca la diferencia entre un despliegue limpio y un caos. En el repositorio del curso conviven tres ramas:
+
+    main: el proyecto en su estado inicial, sin cambios.
+    one-class: todo el progreso del curso con sus commits.
+    production: la rama que dispara el despliegue real.
+
+ Cada vez que haces merge a production, App Hosting lanza un build automático. Este patrón se parece al GitLab Flow, donde existen ramas separadas para main, staging y production en lugar de mezclar todo en master.
+    ¿Qué es GitLab Flow? Es una estrategia de ramas donde main es para desarrollo, pre-production funciona como staging y production representa el ambiente productivo. Cada merge tiene un propósito claro.
+    Después de hacer el merge de one-class a production y conectar la rama desde la consola de Firebase, los lanzamientos automáticos quedan activados [13:40].
+    ¿Cómo resolver el error de App Hosting con Angular 19?
+ App Hosting usa un adaptador interno que prepara tu proyecto para el build. Tiene adaptadores por versión para Angular y Next.js, y soporte futuro para Svelte. El problema: la última versión de Angular, la 19, presenta un issue con el adaptador por defecto [17:00].
+ La solución son dos pasos concretos.
+ ¿Qué dependencia debes instalar?
+ Desde la rama production, instala el adaptador específico como dependencia de desarrollo:
+ bash npm install -D @apphosting/adapter-angular
+ Fíjate que se pinea una versión exacta para evitar incompatibilidades futuras.
+ ¿Qué script agregar al package.json?
+ Abre tu package.json y agrega una tarea nueva:
+ { "scripts": { "apphosting:build": "FRAMEWORK_VERSION=19 apphosting-adapter-angular-build" } }
+ Con eso le dices al adaptador qué versión del framework usar durante el build. Haces commit, empujas a production y App Hosting reintenta el despliegue automáticamente.
+ La primera vez tarda un poco más porque provisiona toda la infraestructura. Después, los despliegues son más rápidos.
+ ¿Qué obtienes después del despliegue exitoso?
+ Firebase te entrega una URL provisional con tu aplicación en vivo. Puedes configurar un dominio personalizado para tu proyecto o el de tu compañía cuando estés listo.
+ En el panel encuentras información valiosa para depurar:
+
+    Logs de Google Cloud: registros de ejecución del servidor.
+    Logs de build: cada paso del proceso de despliegue.
+    Historial de despliegues: versiones anteriores y sus commits.
+
+ Estos pasos del build son exactamente lo que un equipo de infraestructura tendría que automatizar manualmente si no usaras App Hosting.
+ Una observación interesante sobre SSR en producción: cuando inspeccionas las peticiones de red, vas a notar que algunas llamadas iniciales no aparecen en el Network del navegador, porque ya se ejecutaron en el servidor. Solo verás los requests posteriores, los que dispara la aplicación una vez hidratada en el cliente.
+ Con esto ya tienes Angular con SSR corriendo sobre Google Cloud. Si prefieres otro proveedor, puedes hacerlo en Netlify, AWS o cualquier instancia con Node.js. La decisión depende de tu arquitectura y de cuánto control quieras sobre la infraestructura.
+ ¿Qué proveedor estás usando para desplegar tus aplicaciones Angular con SSR? Cuéntalo en los comentarios.
 
 
-
-
-
-
-
-
-
-
-
-
-27. Desplegando Angular SSR en Firebase
-https://platzi.com/cursos/angular-avanzado/desplegando-angular-ssr-en-firebase/
-
-app firebase hosting
-Necesitamos App Hosting.
-
-Poner en práctica con la aplicación de tienda vertual que hice.
 
 28. Generación de Meta Tags Dinámicos con Angular y Open
 https://platzi.com/cursos/angular-avanzado/optimiza-seo-con-titulos-y-metatags-efectivos/
