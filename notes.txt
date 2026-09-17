@@ -885,19 +885,335 @@ Cuando trabajamos con promesas en lugar de Observables, necesitamos adaptar la f
  Con esto ya tienes Angular con SSR corriendo sobre Google Cloud. Si prefieres otro proveedor, puedes hacerlo en Netlify, AWS o cualquier instancia con Node.js. La decisión depende de tu arquitectura y de cuánto control quieras sobre la infraestructura.
  ¿Qué proveedor estás usando para desplegar tus aplicaciones Angular con SSR? Cuéntalo en los comentarios.
 
-
-
 28. Generación de Meta Tags Dinámicos con Angular y Open
 https://platzi.com/cursos/angular-avanzado/optimiza-seo-con-titulos-y-metatags-efectivos/
+
+La optimización de sitios web para compartir en redes sociales es un aspecto fundamental del desarrollo web moderno. Cuando creamos aplicaciones con Angular y aprovechamos el server-side rendering, podemos implementar metadatos que mejoran significativamente la experiencia de usuario al compartir enlaces. Esta funcionalidad no solo beneficia el SEO, sino que también crea una presentación visual atractiva cuando compartimos contenido en plataformas sociales y aplicaciones de mensajería.
+
+¿Qué son los metatags y por qué son importantes en server-side rendering?
+
+Los metatags son información o metadata que tiene un sitio web en una ruta específica. Esta información hace más amigable la búsqueda para motores como Google y Bing, pero también permite generar previsualizaciones atractivas (cards) cuando compartimos enlaces en redes sociales o aplicaciones de mensajería como WhatsApp, Slack o Discord.
+
+Estas previsualizaciones, conocidas como OpenGraph, típicamente incluyen:
+
+    Una imagen representativa
+    Un título descriptivo
+    Una descripción del contenido
+
+La ventaja clave es que estas previsualizaciones solo pueden generarse correctamente si tu sitio implementa server-side rendering, lo que facilita enormemente compartir contenido en internet. Por ejemplo, cuando compartes una noticia o un producto, automáticamente se genera un preview antes de que el usuario haga clic.
+
+El problema de los enlaces sin OpenGraph
+
+Cuando un enlace no tiene configurados los metatags adecuados, al compartirlo en aplicaciones como WhatsApp, solo se muestra el URL sin información visual adicional:
+
+    No hay imagen del producto o contenido
+    No hay descripción clara
+    Solo aparece un enlace simple que no comunica valor
+
+Esto reduce significativamente las probabilidades de que los usuarios hagan clic en el enlace compartido.
+
+¿Cómo implementar metatags dinámicos en Angular?
+
+Angular proporciona servicios específicos para modificar los metatags de forma dinámica. Los dos servicios principales son:
+
+import { Title } from '@angular/platform-browser';
+import { Meta } from '@angular/platform-browser';
+
+Estos servicios nos permiten actualizar el título y la descripción de la página de forma dinámica cuando el usuario navega a diferentes rutas o productos.
+
+Implementación en un componente de detalle de producto
+
+Para implementar estos metatags en un componente de detalle de producto, podemos usar el siguiente enfoque:
+
+constructor(
+  private title: Title,
+  private meta: Meta
+) {
+  effect(() => {
+    if (this.productResorts.value) {
+      this.title.setTitle(this.productResorts.value.title);
+      this.meta.updateTag({
+        name: 'description',
+        content: this.productResorts.value.description
+      });
+    }
+  });
+}
+
+Este código actualiza el título y la descripción cada vez que se carga un nuevo producto. Sin embargo, estos metatags básicos no son suficientes para generar las previsualizaciones en redes sociales.
+
+¿Qué es el protocolo OpenGraph y cómo implementarlo?
+
+El Open Graph Protocol es un conjunto de metatags estandarizados que todos los navegadores y plataformas sociales acordaron utilizar para generar previsualizaciones de enlaces. Estos metatags tienen el prefijo "og:" y son fundamentales para crear cards atractivas al compartir contenido.
+
+Propiedades mínimas requeridas para OpenGraph
+
+Para generar una previsualización adecuada, necesitamos al menos estas propiedades:
+
+    og:title - El título del contenido
+    og:description - Una descripción breve
+    og:image - La URL de la imagen a mostrar
+    og:url - La URL canónica del contenido
+    og:type - El tipo de contenido (website, product, article, etc.)
+
+Implementación en Angular:
+
+this.meta.updateTag({ property: 'og:title', content: product.title });
+this.meta.updateTag({ property: 'og:description', content: product.description });
+this.meta.updateTag({ property: 'og:image', content: product.cover });
+this.meta.updateTag({ 
+  property: 'og:url', 
+  content: `${environment.domain}/product/${product.slug}` 
+});
+this.meta.updateTag({ property: 'og:type', content: 'product' });
+
+Configuración del dominio en variables de entorno
+
+Es importante configurar correctamente el dominio en las variables de entorno para que las URLs de OpenGraph sean absolutas:
+
+// environment.ts (desarrollo)
+export const environment = {
+  production: false,
+  domain: 'http://localhost:4200'
+};
+
+// environment.prod.ts (producción)
+export const environment = {
+  production: true,
+  domain: 'https://tudominio.com'
+};
+
+¿Cómo refactorizar para buenas prácticas?
+
+Para evitar la repetición de código y seguir buenas prácticas de desarrollo en Angular, es recomendable crear un servicio dedicado para manejar los metatags:
+
+@Injectable({
+  providedIn: 'root'
+})
+export class SeoService {
+  constructor(
+    private title: Title,
+    private meta: Meta
+  ) {}
+
+  updateProductMeta(product: any) {
+    this.title.setTitle(product.title);
+    
+    // Basic SEO
+    this.meta.updateTag({ name: 'description', content: product.description });
+    
+    // OpenGraph
+    this.meta.updateTag({ property: 'og:title', content: product.title });
+    this.meta.updateTag({ property: 'og:description', content: product.description });
+    this.meta.updateTag({ property: 'og:image', content: product.cover });
+    this.meta.updateTag({ 
+      property: 'og:url', 
+      content: `${environment.domain}/product/${product.slug}` 
+    });
+    this.meta.updateTag({ property: 'og:type', content: 'product' });
+  }
+}
+
+Este servicio puede reutilizarse en diferentes componentes de la aplicación, como páginas de productos, páginas de información o cualquier otra ruta que necesite metatags personalizados.
+
+La implementación de metatags y OpenGraph en aplicaciones Angular con server-side rendering mejora significativamente la experiencia de compartir contenido y el posicionamiento SEO. Recuerda que estos cambios solo serán efectivos cuando la aplicación esté desplegada en un entorno de producción accesible públicamente. ¿Has implementado OpenGraph en tus proyectos? Comparte tu experiencia en los comentarios.
 
 29. Creación de MetaTags Dinámicos en Angular
 https://platzi.com/cursos/angular-avanzado/implementa-metatags-service-para-seo-en-angular/
 
+La optimización de metadatos en Angular es un aspecto fundamental para mejorar la experiencia de usuario y el SEO de nuestras aplicaciones web. Cuando compartimos enlaces en redes sociales o plataformas de mensajería, es crucial que estos muestren información relevante y atractiva. En este artículo, exploraremos cómo crear un servicio reutilizable para gestionar metadatos dinámicos en Angular, permitiéndonos implementar Open Graph y otras etiquetas meta de forma eficiente.
+
+¿Cómo crear un servicio de metadatos reutilizable en Angular?
+
+Cuando desarrollamos aplicaciones en Angular, frecuentemente necesitamos actualizar los metadatos de nuestras páginas para mejorar el SEO y la experiencia al compartir enlaces. En lugar de repetir el mismo código en múltiples componentes, podemos crear un servicio dedicado que se encargue de esta tarea.
+
+El primer paso es generar un nuevo servicio utilizando el CLI de Angular:
+
+ng generate service shared/MetaTags
+
+Este comando creará un servicio en el módulo compartido (shared), que podremos inyectar en cualquier componente de nuestra aplicación. La ubicación en el directorio "shared" es estratégica, ya que este servicio será utilizado por múltiples componentes.
+
+¿Qué estructura debe tener nuestro servicio de metadatos?
+
+Para crear un servicio de metadatos efectivo, necesitamos definir una estructura clara que nos permita manejar diferentes tipos de metadatos, incluyendo las etiquetas Open Graph. Comencemos definiendo una interfaz para nuestros metadatos:
+
+interface PageMetadata {
+  title: string;
+  description: string;
+  image: string;
+  url: string;
+}
+
+Esta interfaz nos ayudará a mantener una estructura consistente para los metadatos de nuestras páginas. Ahora, podemos definir valores predeterminados para cuando no se proporcionen ciertos metadatos:
+
+const defaultMetadata: PageMetadata = {
+  title: 'ng store',
+  description: 'Angular store application',
+  image: '',
+  url: environment.domain
+};
+
+El siguiente paso es crear un método que genere las definiciones de metadatos basadas en la información proporcionada:
+
+private generateMetaDefinitions(metadata: PageMetadata): MetaDefinition[] {
+  return [
+    { name: 'title', content: metadata.title },
+    { name: 'description', content: metadata.description },
+    { property: 'og:title', content: metadata.title },
+    { property: 'og:description', content: metadata.description },
+    { property: 'og:image', content: metadata.image },
+    { property: 'og:url', content: metadata.url }
+  ];
+}
+
+Este método devuelve un array de definiciones de metadatos que Angular puede utilizar para actualizar las etiquetas meta en el documento HTML.
+
+¿Cómo implementar la actualización dinámica de metadatos?
+
+Una vez que tenemos la estructura básica, necesitamos implementar el método principal que actualizará los metadatos. Este método debe:
+
+    Aceptar metadatos parciales (no todos los campos son obligatorios)
+    Combinar los metadatos proporcionados con los valores predeterminados
+    Generar las definiciones de metadatos
+    Actualizar las etiquetas meta en el documento
+
+updateMetaTags(metadata: Partial<PageMetadata>): void {
+  // Combinar metadatos proporcionados con valores predeterminados
+  const metaInfo = { ...defaultMetadata, ...metadata };
+  
+  // Generar definiciones de metadatos
+  const tags = this.generateMetaDefinitions(metaInfo);
+  
+  // Actualizar etiquetas meta
+  tags.forEach(tag => this.metaTagService.updateTag(tag));
+  
+  // Actualizar el título del documento
+  this.titleService.setTitle(metaInfo.title);
+}
+
+Para que este servicio funcione correctamente, necesitamos inyectar los servicios necesarios de Angular:
+
+constructor(
+  private metaTagService: Meta,
+  private titleService: Title
+) {}
+
+¿Cómo utilizar el servicio de metadatos en nuestros componentes?
+
+Una vez que hemos creado nuestro servicio de metadatos, podemos utilizarlo en cualquier componente de nuestra aplicación. Por ejemplo, en un componente de detalle de producto:
+
+constructor(private metaTagsService: MetaTagsService) {}
+
+ngOnInit() {
+  this.productService.getProduct(this.productId).subscribe(product => {
+    // Actualizar metadatos con información del producto
+    this.metaTagsService.updateMetaTags({
+      title: product.title,
+      description: product.description,
+      image: product.image,
+      url: `${environment.domain}/products/${product.id}`
+    });
+  });
+}
+
+Con esta implementación, cuando un usuario acceda a la página de detalle de un producto, los metadatos se actualizarán dinámicamente con la información específica del producto. Esto mejorará significativamente la experiencia al compartir enlaces en redes sociales, ya que se mostrará una vista previa con la imagen, título y descripción del producto.
+
+¿Qué beneficios ofrece este enfoque?
+
+La creación de un servicio dedicado para la gestión de metadatos ofrece varios beneficios:
+
+    Reutilización de código: Evitamos duplicar código en múltiples componentes.
+    Mantenibilidad: Centralizamos la lógica de actualización de metadatos en un solo lugar.
+    Consistencia: Aseguramos que todos los metadatos sigan la misma estructura.
+    Valores predeterminados: Proporcionamos valores de respaldo cuando no se dispone de información específica.
+    Flexibilidad: Podemos actualizar fácilmente los metadatos en cualquier componente de nuestra aplicación.
+
+Este enfoque nos permite implementar una estrategia sólida de SEO y mejorar la experiencia de compartir enlaces de nuestra aplicación Angular, lo que puede aumentar el tráfico y la visibilidad de nuestro sitio.
+
+La implementación de metadatos dinámicos es un aspecto crucial del desarrollo web moderno que no debe pasarse por alto. Con el servicio que hemos creado, podemos gestionar fácilmente los metadatos en toda nuestra aplicación Angular, mejorando tanto el SEO como la experiencia de usuario. ¿Has implementado estrategias similares en tus proyectos? Comparte tu experiencia en los comentarios.
+
 30. Proceso de Hydration y Event Replay en Angular
 https://platzi.com/cursos/angular-avanzado/mejora-ux-con-hydration-y-eventreplay-en-angular/
 
-EN app.config.ts...
-provideClientHydration(withEventReplay())
+
+El proceso de Hydration en Angular es un componente crucial para el rendimiento y la experiencia de usuario en aplicaciones modernas. Este mecanismo permite combinar lo mejor del renderizado del lado del servidor con la interactividad del lado del cliente, creando aplicaciones web rápidas y responsivas. Entender cómo funciona este proceso y cómo optimizarlo puede marcar una diferencia significativa en el rendimiento de tus aplicaciones Angular, especialmente cuando implementas Server-Side Rendering.
+
+¿Qué es el proceso de Hydration en Angular?
+
+El proceso de Hydration es fundamentalmente el momento en que el servidor entrega una página ya renderizada al navegador (cliente) para que este le dé "vida" e interactividad. Cuando utilizamos Server-Side Rendering en Angular, el servidor genera todo el HTML inicial de una ruta específica (como la página principal, un detalle de producto o una sección "acerca de") y lo envía al cliente.
+
+Una vez que el navegador recibe este HTML renderizado, comienza el proceso de Hydration, donde:
+
+    El navegador interpreta el HTML estático recibido
+    Angular "hidrata" este contenido, conectando los eventos y la lógica interactiva
+    La aplicación se vuelve completamente funcional e interactiva
+
+La ventaja principal es que obtenemos lo mejor de ambos mundos: el rendimiento inicial del renderizado en servidor y la interactividad completa de una Single Page Application.
+
+Beneficios del proceso de Hydration
+
+    Mejor SEO: Los motores de búsqueda reciben páginas completamente renderizadas
+    Carga inicial más rápida: Los usuarios ven contenido útil más rápidamente
+    Mejor experiencia de usuario: No hay pantallas en blanco mientras se carga JavaScript
+    Mejores métricas de rendimiento: Impacta positivamente en métricas como First Input Delay y Cumulative Layout Shift
+
+¿Cómo funciona el Event Replay en Angular?
+
+Durante el proceso de Hydration puede surgir un problema: existe un breve período en que la página ya está visible pero aún no es completamente interactiva. Si un usuario hace clic en elementos durante este intervalo, esas interacciones podrían perderse porque los event listeners de JavaScript aún no están activos.
+
+Para solucionar este problema, Angular implementa un algoritmo llamado Event Replay. Este mecanismo:
+
+    Captura todos los eventos que ocurren durante el proceso de Hydration
+    Los almacena en una cola temporal
+    Una vez completada la hidratación, reproduce estos eventos en el orden correcto
+
+De esta manera, ninguna interacción del usuario se pierde, incluso si ocurre durante ese breve período de transición entre el renderizado del servidor y la completa interactividad del cliente.
+
+Configuración del Event Replay en Angular
+
+Para habilitar el Event Replay en tu aplicación Angular, necesitas configurarlo en tu archivo de configuración. Normalmente, esto se hace en el archivo app.config.ts:
+
+import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
+
+export const appConfig: ApplicationConfig = {
+  providers: [
+    provideClientHydration(
+      withEventReplay()
+    ),
+    // Otros providers...
+  ]
+};
+
+Es importante verificar que tengas habilitadas ambas funciones:
+
+    provideClientHydration: Habilita el proceso básico de hidratación
+    withEventReplay(): Activa el algoritmo de reproducción de eventos
+
+¿Por qué es importante implementar Event Replay?
+
+La implementación del Event Replay es crucial para ofrecer una experiencia de usuario fluida y sin frustraciones. Sin esta función, podrías enfrentar situaciones donde los usuarios hacen clic en botones o enlaces y nada ocurre, lo que genera confusión y una percepción negativa de tu aplicación.
+
+Este mecanismo es especialmente importante para:
+
+    Aplicaciones con alta interactividad
+    Sitios donde los usuarios tienden a interactuar rápidamente con la interfaz
+    Páginas con elementos accionables visibles inmediatamente (como botones de compra o navegación)
+
+El Event Replay mejora significativamente métricas de rendimiento como el First Input Delay, que mide la capacidad de respuesta de tu aplicación a las primeras interacciones del usuario.
+
+El proceso de Hydration y el Event Replay son componentes fundamentales para crear aplicaciones Angular modernas con un rendimiento óptimo. Implementar correctamente estas técnicas te permitirá ofrecer a tus usuarios una experiencia fluida y responsiva, combinando la velocidad del renderizado en servidor con la interactividad completa del cliente. Recuerda verificar tu configuración para asegurarte de que estás aprovechando al máximo estas potentes características de Angular.
+
+
+
+
+
+
+
+
+
+
+
+
 
 31. Productos relacionados con RxResource en Angular
 https://platzi.com/cursos/angular-avanzado/productos-relacionados-con-rxresource-en/

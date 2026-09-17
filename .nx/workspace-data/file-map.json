@@ -1,0 +1,308 @@
+{
+  "version": "6.0",
+  "nxVersion": "23.2.0",
+  "pathMappings": {
+    "@shared/*": [
+      "./src/app/domains/shared/*"
+    ],
+    "@app/*": [
+      "./src/app/*"
+    ],
+    "@products/*": [
+      "./src/app/domains/products/*"
+    ],
+    "@info/*": [
+      "./src/app/domains/info/*"
+    ],
+    "@environments/*": [
+      "./src/environments/*"
+    ]
+  },
+  "nxJsonPlugins": [],
+  "fileMap": {
+    "projectFileMap": {},
+    "nonProjectFiles": [
+      {
+        "file": ".editorconfig",
+        "hash": "7054233358509192993"
+      },
+      {
+        "file": ".gitignore",
+        "hash": "15025248205639185283"
+      },
+      {
+        "file": ".vscode/extensions.json",
+        "hash": "17157140141713546000"
+      },
+      {
+        "file": ".vscode/launch.json",
+        "hash": "5548625508121886698"
+      },
+      {
+        "file": ".vscode/tasks.json",
+        "hash": "12688801647783120961"
+      },
+      {
+        "file": "README.md",
+        "hash": "13963075940995889094"
+      },
+      {
+        "file": "angular.json",
+        "hash": "1513000067070431441"
+      },
+      {
+        "file": "eslint.config.js",
+        "hash": "1566311092364590385"
+      },
+      {
+        "file": "karma.conf.js",
+        "hash": "3842536485194032399"
+      },
+      {
+        "file": "notes.txt",
+        "hash": "512585631191182029"
+      },
+      {
+        "file": "package-lock.json",
+        "hash": "13371536472686631077"
+      },
+      {
+        "file": "package.json",
+        "hash": "3110007142179074623"
+      },
+      {
+        "file": "src/app/app.component.spec.ts",
+        "hash": "14888842846296253930"
+      },
+      {
+        "file": "src/app/app.component.ts",
+        "hash": "3205287950397742321"
+      },
+      {
+        "file": "src/app/app.config.server.ts",
+        "hash": "18130517788590199282"
+      },
+      {
+        "file": "src/app/app.config.ts",
+        "hash": "4570863212090331837"
+      },
+      {
+        "file": "src/app/app.routes.server.ts",
+        "hash": "5098685376619654153"
+      },
+      {
+        "file": "src/app/app.routes.ts",
+        "hash": "3195364131361824078"
+      },
+      {
+        "file": "src/app/domains/info/components/wave-audio/wave-audio.component.html",
+        "hash": "4058731258627657691"
+      },
+      {
+        "file": "src/app/domains/info/components/wave-audio/wave-audio.component.ts",
+        "hash": "7365129028704256878"
+      },
+      {
+        "file": "src/app/domains/info/pages/about/about.component.html",
+        "hash": "4554713576590681167"
+      },
+      {
+        "file": "src/app/domains/info/pages/about/about.component.ts",
+        "hash": "15499119098903674125"
+      },
+      {
+        "file": "src/app/domains/info/pages/locations/locations.component.css",
+        "hash": "3244421341483603138"
+      },
+      {
+        "file": "src/app/domains/info/pages/locations/locations.component.html",
+        "hash": "9385316317664946693"
+      },
+      {
+        "file": "src/app/domains/info/pages/locations/locations.component.ts",
+        "hash": "6976385359714202157"
+      },
+      {
+        "file": "src/app/domains/info/pages/not-found/not-found.component.css",
+        "hash": "3244421341483603138"
+      },
+      {
+        "file": "src/app/domains/info/pages/not-found/not-found.component.html",
+        "hash": "6558406547034409192"
+      },
+      {
+        "file": "src/app/domains/info/pages/not-found/not-found.component.ts",
+        "hash": "17975175971543750299"
+      },
+      {
+        "file": "src/app/domains/products/components/product/product.component.html",
+        "hash": "14828698278854206616"
+      },
+      {
+        "file": "src/app/domains/products/components/product/product.component.ts",
+        "hash": "11162450854513178472"
+      },
+      {
+        "file": "src/app/domains/products/components/related/related.component.css",
+        "hash": "3244421341483603138"
+      },
+      {
+        "file": "src/app/domains/products/components/related/related.component.html",
+        "hash": "9322029623328101201"
+      },
+      {
+        "file": "src/app/domains/products/components/related/related.component.ts",
+        "hash": "7381974989389907338"
+      },
+      {
+        "file": "src/app/domains/products/pages/list/list.component.html",
+        "hash": "6850332856650108010"
+      },
+      {
+        "file": "src/app/domains/products/pages/list/list.component.ts",
+        "hash": "10311801148515923008"
+      },
+      {
+        "file": "src/app/domains/products/pages/product-detail/product-detail.component.html",
+        "hash": "6866227607911131412"
+      },
+      {
+        "file": "src/app/domains/products/pages/product-detail/product-detail.component.ts",
+        "hash": "10063320947759236502"
+      },
+      {
+        "file": "src/app/domains/shared/components/counter/counter.component.html",
+        "hash": "15525492720383569295"
+      },
+      {
+        "file": "src/app/domains/shared/components/counter/counter.component.ts",
+        "hash": "7836621623007859209"
+      },
+      {
+        "file": "src/app/domains/shared/components/header/header.component.html",
+        "hash": "6949629796396398861"
+      },
+      {
+        "file": "src/app/domains/shared/components/header/header.component.ts",
+        "hash": "6243719672617962689"
+      },
+      {
+        "file": "src/app/domains/shared/components/layout/layout.component.html",
+        "hash": "3165378464388198245"
+      },
+      {
+        "file": "src/app/domains/shared/components/layout/layout.component.ts",
+        "hash": "1177263664143538002"
+      },
+      {
+        "file": "src/app/domains/shared/components/search/search.component.html",
+        "hash": "988296815042388827"
+      },
+      {
+        "file": "src/app/domains/shared/components/search/search.component.ts",
+        "hash": "10998532375023157820"
+      },
+      {
+        "file": "src/app/domains/shared/directives/highlight.directive.ts",
+        "hash": "16891007323123194525"
+      },
+      {
+        "file": "src/app/domains/shared/models/category.model.ts",
+        "hash": "5062523511223952873"
+      },
+      {
+        "file": "src/app/domains/shared/models/product.model.ts",
+        "hash": "15035302390949081311"
+      },
+      {
+        "file": "src/app/domains/shared/pipes/reverse.pipe.ts",
+        "hash": "17130457474299561502"
+      },
+      {
+        "file": "src/app/domains/shared/pipes/time-ago.pipe.ts",
+        "hash": "580602907809417282"
+      },
+      {
+        "file": "src/app/domains/shared/services/cart.service.ts",
+        "hash": "806947198411129809"
+      },
+      {
+        "file": "src/app/domains/shared/services/category.service.ts",
+        "hash": "3210061668568912230"
+      },
+      {
+        "file": "src/app/domains/shared/services/meta-tags.service.ts",
+        "hash": "981115986495113179"
+      },
+      {
+        "file": "src/app/domains/shared/services/product.service.ts",
+        "hash": "6874066744946192290"
+      },
+      {
+        "file": "src/assets/.gitkeep",
+        "hash": "3244421341483603138"
+      },
+      {
+        "file": "src/assets/audio.mp3",
+        "hash": "17470164110322744874"
+      },
+      {
+        "file": "src/assets/logo.png",
+        "hash": "9593908325035508911"
+      },
+      {
+        "file": "src/environments/environment.development.ts",
+        "hash": "844312407815733008"
+      },
+      {
+        "file": "src/environments/environment.stagin.ts",
+        "hash": "16315975705241497639"
+      },
+      {
+        "file": "src/environments/environment.ts",
+        "hash": "15957881594326582228"
+      },
+      {
+        "file": "src/favicon.ico",
+        "hash": "3988961587069885523"
+      },
+      {
+        "file": "src/index.html",
+        "hash": "7084673409288135044"
+      },
+      {
+        "file": "src/main.server.ts",
+        "hash": "6916325781493145325"
+      },
+      {
+        "file": "src/main.ts",
+        "hash": "3269184868303299932"
+      },
+      {
+        "file": "src/server.ts",
+        "hash": "6679738915801669717"
+      },
+      {
+        "file": "src/styles.css",
+        "hash": "12459233914134097167"
+      },
+      {
+        "file": "tailwind.config.js",
+        "hash": "738843765802938800"
+      },
+      {
+        "file": "tsconfig.app.json",
+        "hash": "3166158365097357214"
+      },
+      {
+        "file": "tsconfig.json",
+        "hash": "1675957706222927580"
+      },
+      {
+        "file": "tsconfig.spec.json",
+        "hash": "2616695630844527246"
+      }
+    ]
+  },
+  "externalNodesHash": "10847581386406038595"
+}
