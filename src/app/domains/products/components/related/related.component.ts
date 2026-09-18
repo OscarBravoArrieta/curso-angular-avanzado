@@ -10,10 +10,9 @@ import { ProductComponent } from '../product/product.component';
     styleUrl: './related.component.css',
 })
 export class RelatedComponent {
+    productService = inject(ProductService);
 
-    productService = inject(ProductService)
-
-    $slug = input.required<string>({ alias: 'slug'})
+    $slug = input.required<string>({ alias: 'slug'});
 
     relatedProducts = rxResource({
         params: () => ({

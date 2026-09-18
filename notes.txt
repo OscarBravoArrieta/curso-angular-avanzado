@@ -1203,20 +1203,85 @@ El Event Replay mejora significativamente métricas de rendimiento como el First
 
 El proceso de Hydration y el Event Replay son componentes fundamentales para crear aplicaciones Angular modernas con un rendimiento óptimo. Implementar correctamente estas técnicas te permitirá ofrecer a tus usuarios una experiencia fluida y responsiva, combinando la velocidad del renderizado en servidor con la interactividad completa del cliente. Recuerda verificar tu configuración para asegurarte de que estás aprovechando al máximo estas potentes características de Angular.
 
-
-
-
-
-
-
-
-
-
-
-
-
 31. Productos relacionados con RxResource en Angular
 https://platzi.com/cursos/angular-avanzado/productos-relacionados-con-rxresource-en/
+
+Mostrar productos relacionados en el detalle de un producto es una de esas funcionalidades que cualquier e-commerce necesita para mejorar la navegación y el descubrimiento. Aquí aprenderás a construir ese feature en Angular reutilizando endpoints, componentes y aprovechando RxResource para sincronizar la consulta con un signal dinámico.
+
+¿Qué endpoint debes usar para obtener productos relacionados?
+
+La API expone un endpoint específico que te devuelve productos de la misma categoría, excluyendo el actual.
+
+La lógica es sencilla: a la URL del producto le agregas /related al final. Tienes dos formas de consultarlo:
+
+    Por ID: /products/1/related te devuelve los relacionados al producto con ID 1.
+    Por slug: /products/{slug}/related hace lo mismo, pero usando el slug del producto.
+
+Como el proyecto trabaja con slugs para mantener URLs SEO friendly, vas a usar la segunda opción. Así mantienes consistencia con el resto del flujo, donde ya se consume el endpoint de slug para el detalle [01:30].
+
+    ¿Qué hace el endpoint /related? Devuelve todos los productos de la misma categoría que el producto consultado, excluyendo a ese mismo producto. Es la forma que tiene la API de relacionarlos entre sí.
+
+¿Cómo crear el componente related dentro del dominio products?
+
+Lo primero es generar un componente nuevo dentro del domain de productos.
+
+Desde la consola, generas el componente en domains/products/components/related. Por defecto Angular crea tres archivos: CSS, HTML y TypeScript. Como el proyecto usa Tailwind con sus utility classes, puedes borrar el archivo CSS porque no lo vas a necesitar.
+
+Dentro del componente vas a recibir un input tipo signal con el slug del producto:
+
+typescript slug = input.required<string>({ alias: 'slug' });
+
+El alias permite enviarlo desde el padre como slug sin el signo de pesos. Este input será la dependencia clave para disparar la consulta cada vez que cambie [03:30].
+
+¿Dónde defines el método getRelatedProducts en el servicio?
+
+La consulta no la haces directamente en el componente, la centralizas en el ProductService.
+
+Ahí ya tienes getOneBySlug, así que agregas un método paralelo llamado getRelatedProducts que reutiliza la misma URL pero con /related al final. Devuelve un array de productos.
+
+Esto mantiene la lógica de acceso a datos en un solo lugar y evita que los componentes hagan peticiones HTTP por su cuenta.
+
+¿Cómo conectar RxResource con un signal de entrada?
+
+Aquí entra la parte interesante: usar RxResource para que la consulta reaccione a cambios del slug.
+
+La estructura de un RxResource necesita dos piezas: un request que define las dependencias reactivas, y un loader que ejecuta la petición. El request es un objeto que envuelve los signals de los que depende la consulta.
+
+typescript private productService = inject(ProductService);
+
+relatedProducts = rxResource({ request: () => ({ slug: this.slug() }), loader: ({ request }) => this.productService.getRelatedProducts(request.slug) });
+
+Una nota práctica: el autocompletado de Cursor o cualquier language model a veces falla con APIs nuevas como RxResource. Suele sugerir la forma clásica con Observable directo. Te toca a ti corregirlo manualmente porque el modelo aún no tiene suficiente contexto sobre estas APIs recientes [05:50].
+
+    ¿Por qué usar request en lugar de pasar el slug directo? Porque RxResource necesita saber qué signals observar para volver a ejecutar la consulta. Sin el request, no detecta la dependencia y no se actualiza al cambiar el slug.
+
+¿Por qué inyectar el servicio al inicio del componente?
+
+Una buena práctica es declarar las inyecciones con inject() al principio de la clase.
+
+La razón es simple: otros signals o resources dentro del componente pueden depender de ese servicio. Si lo declaras después, puedes generar errores de orden de inicialización. Ponerlo arriba garantiza que esté disponible cuando los demás miembros lo necesiten.
+
+¿Cómo renderizar la grilla de productos relacionados?
+
+En el HTML del componente related iteras sobre el resultado del resource y reutilizas el componente de tarjeta de producto que ya tienes.
+
+Esto es reutilización de componentes en su forma más práctica: el mismo componente que renderiza un producto en el listado principal se usa aquí para mostrar cada relacionado dentro de un grid.
+
+Luego, en la página de detalle del producto, importas y colocas el componente:
+
+html <app-related [slug]="product().slug" />
+El slug lo obtienes del producto que ya cargó la página de detalle. Recuerda importar el RelatedComponent en el array de imports del componente padre, porque sin ese contexto Angular no sabe de dónde sale la directiva y lanza error.
+¿Qué resultado obtienes en el e-commerce?
+Al navegar a una categoría como electronics y entrar al detalle de un producto, debajo de la información principal aparece una galería con los demás productos de esa categoría.
+Cada vez que cambias de producto, el slug del input cambia, RxResource detecta la nueva dependencia y dispara automáticamente la consulta para traer los nuevos relacionados [09:40]. No tienes que escribir lógica extra de suscripción ni manejo manual de cambios.
+Esta base te deja listo para el siguiente paso: aplicar carga diferida de componentes con @defer, una de las características más potentes que trae Angular para optimizar el rendimiento. ¿Ya habías usado RxResource con inputs como dependencia? Cuéntame en los comentarios cómo lo estás aplicando en tus proyectos.
+
+
+
+
+
+
+
 
 32. Carga diferida de componentes en Angular para mejorar rendimiento
 https://platzi.com/cursos/angular-avanzado/optimiza-rendimiento-con-defer-en-angular/
