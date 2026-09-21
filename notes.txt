@@ -1286,22 +1286,203 @@ Esta base te deja listo para el siguiente paso: aplicar carga diferida de compon
 32. Carga diferida de componentes en Angular para mejorar rendimiento
 https://platzi.com/cursos/angular-avanzado/optimiza-rendimiento-con-defer-en-angular/
 
-    @defer (on viewport) {
-        <app-related [slug]="data.slug"/>
-    }@placeholder {
-        <p>Loading...</p>
-    }
+La optimización de rendimiento en Angular es un aspecto fundamental para desarrollar aplicaciones web modernas y eficientes. Mediante técnicas avanzadas como lazy loading y code splitting, podemos mejorar significativamente la experiencia del usuario al reducir los tiempos de carga y optimizar el uso de recursos. Estas estrategias son esenciales tanto para aplicaciones con server-side rendering como para aplicaciones tradicionales de cliente.
 
+¿Qué es el lazy loading y code splitting en Angular?
+
+El lazy loading en Angular es una técnica que permite cargar partes específicas de la aplicación solo cuando son necesarias. Tradicionalmente, este concepto se aplicaba a nivel de rutas, donde cada página cargaba su propio JavaScript específico en lugar de cargar todo el código en el bundle inicial.
+
+El code splitting complementa esta técnica al dividir la aplicación en diferentes "chunks" o fragmentos de JavaScript. Esto significa que:
+
+    Cada ruta puede tener su propio archivo JavaScript específico (por ejemplo, about.js, products.js)
+    Solo se carga el código necesario cuando el usuario navega a una página específica
+    Se reduce significativamente el tamaño del bundle inicial
+
+Esta estrategia mejora el rendimiento inicial de la aplicación, ya que el usuario no necesita descargar código que posiblemente nunca utilice.
+
+¿Cómo funciona el lazy loading tradicional por rutas?
+
+En el enfoque tradicional de lazy loading en Angular:
+
+    La aplicación se divide en módulos por rutas
+    Cuando el usuario navega a una ruta específica, Angular carga dinámicamente el módulo correspondiente
+    Esto reduce el tiempo de carga inicial y mejora la experiencia del usuario
+
+Este método ha sido la base de la optimización en Angular durante mucho tiempo, pero las técnicas modernas nos permiten ir más allá.
+
+¿Cómo implementar lazy loading a nivel de componentes?
+
+Las técnicas modernas de JavaScript nos permiten aplicar lazy loading no solo a nivel de rutas, sino también a nivel de componentes individuales dentro de una misma página. Esto es particularmente útil cuando:
+
+    Una página contiene múltiples componentes pesados
+    Algunos componentes están fuera del viewport inicial
+    Ciertos componentes solo se muestran bajo condiciones específicas
+
+Para implementar esta técnica en Angular, utilizamos la directiva defer:
+
+<div style="margin-bottom: 80vh;">
+  <!-- Contenido principal del producto -->
+</div>
+
+@defer (on viewport) {
+  <app-related-products [products]="relatedProducts"></app-related-products>
+} @placeholder {
+  <!-- Contenido opcional mientras se carga -->
+}
+
+En este ejemplo:
+
+    El componente app-related-products solo se cargará cuando entre en el viewport del usuario
+    El JavaScript asociado a este componente no forma parte del chunk inicial
+    Si el usuario nunca hace scroll hasta esa sección, el código nunca se cargará
+
+Esta técnica optimiza aún más el rendimiento al cargar componentes específicos solo cuando realmente son necesarios, similar a cómo funciona el lazy loading de imágenes.
+
+¿Qué opciones ofrece la directiva defer?
+
+La directiva defer en Angular ofrece varias opciones para controlar cuándo se carga un componente:
+
+    on viewport: Carga el componente cuando entra en el viewport del usuario
+    on hover: Carga el componente cuando el usuario pasa el cursor sobre un elemento
+    on interaction: Carga el componente cuando el usuario interactúa con un elemento
+    when: Permite definir una condición personalizada para la carga
+    immediate: Carga el componente tan pronto como el navegador esté desocupado
+
+Estas opciones proporcionan gran flexibilidad para optimizar la carga de componentes según las necesidades específicas de la aplicación.
+
+¿Cuáles son los beneficios del lazy loading a nivel de componentes?
+
+Implementar lazy loading a nivel de componentes ofrece numerosos beneficios:
+
+    Reducción del tamaño inicial de JavaScript: Solo se carga lo esencial para la visualización inicial
+    Mejora en el tiempo de carga: La página principal se carga más rápido al diferir componentes secundarios
+    Optimización de recursos: Se utilizan los recursos del navegador de manera más eficiente
+    Mejor experiencia de usuario: La interactividad inicial mejora al priorizar los componentes visibles
+    Aplicable a todo tipo de aplicaciones: Funciona tanto en aplicaciones con server-side rendering como en aplicaciones tradicionales de cliente
+
+Esta técnica es especialmente valiosa en aplicaciones complejas con muchos componentes o en aplicaciones de back office con numerosos formularios y elementos interactivos.
+
+El lazy loading a nivel de componentes representa una evolución natural en la optimización de aplicaciones Angular, permitiendo un control más granular sobre cómo y cuándo se carga el código. Al implementar estas técnicas, podemos crear aplicaciones más rápidas, eficientes y con mejor experiencia de usuario, independientemente de si utilizamos server-side rendering o no.
+
+¿Has implementado alguna de estas técnicas en tus proyectos? Comparte tu experiencia en los comentarios y cuéntanos cómo ha mejorado el rendimiento de tus aplicaciones Angular.
 
 33. Optimización de Incremental Hydration en Angular
 https://platzi.com/cursos/angular-avanzado/implementa-hydration-incremental-para-mejor-ux/
-EN app.config.ts...
-provideClientHydration(withEventReplay(), withNoIncrementalHydration())
 
+La hidratación incremental es una técnica avanzada que está revolucionando el rendimiento de las aplicaciones Angular. Al combinar el poder del renderizado del lado del servidor con estrategias inteligentes de carga, esta funcionalidad permite que nuestras aplicaciones web respondan más rápidamente a las interacciones del usuario. Descubramos cómo implementar esta poderosa característica y qué beneficios aporta a nuestros proyectos.
+
+¿Qué es la hidratación incremental y por qué es importante?
+
+La hidratación incremental representa una evolución significativa en el proceso de renderizado de aplicaciones Angular. En lugar de hidratar (hacer interactivos) todos los componentes de una página al mismo tiempo, esta técnica permite activar solo aquellos componentes con los que el usuario está interactuando. Esto resulta en una mejora sustancial del rendimiento, especialmente en aplicaciones complejas.
+
+Tradicionalmente, el proceso de hidratación funciona así:
+
+    El servidor envía al navegador una versión pre-renderizada de la página (HTML estático)
+    Una vez que llega al navegador, se activa el proceso de hidratación
+    Todos los componentes se vuelven interactivos simultáneamente
+
+Con la hidratación incremental, este proceso cambia radicalmente:
+
+    El servidor sigue enviando la versión pre-renderizada
+    Los componentes permanecen "inactivos" hasta que el usuario interactúa con ellos
+    Solo se hidratan los componentes necesarios, reduciendo significativamente la carga de procesamiento
+
+Esta optimización es especialmente valiosa en sitios con muchos componentes interactivos, como tiendas en línea o aplicaciones con interfaces complejas.
+
+¿Cómo funciona la hidratación en Angular?
+
+Para entender la hidratación incremental, primero debemos comprender el proceso básico de hidratación. Cuando utilizamos Server-Side Rendering (SSR) en Angular, el servidor genera el HTML inicial de nuestra aplicación y lo envía al navegador.
+
+Este HTML inicial es como una "fotografía" de nuestra aplicación: se ve igual que la versión interactiva, pero no responde a eventos como clics o entradas de usuario. El proceso de hidratación es el que "da vida" a esta versión estática, permitiendo que responda a las interacciones.
+
+En la hidratación tradicional, Angular debe procesar todos los componentes de la página para hacerlos interactivos, lo que puede causar retrasos perceptibles, especialmente en dispositivos menos potentes.
+
+¿Cómo implementar la hidratación incremental en Angular?
+
+Implementar la hidratación incremental en Angular es sorprendentemente sencillo, especialmente si ya estamos utilizando otras características modernas del framework.
+
+Requisitos previos para la hidratación incremental
+
+Para aprovechar al máximo esta característica, necesitamos:
+
+    Tener configurado el Server-Side Rendering en nuestra aplicación
+    Utilizar la directiva @defer en los componentes apropiados
+    Tener habilitada la hidratación básica
+
+La combinación de estos elementos es lo que permite que Angular determine qué componentes necesitan ser hidratados y cuándo.
+
+Configuración paso a paso
+
+Para habilitar la hidratación incremental, debemos modificar nuestro archivo de configuración de la aplicación:
+
+import { ApplicationConfig } from '@angular/core';
+import { provideClientHydration, withEventReplay, withIncrementalHydration } from '@angular/platform-browser';
+
+export const appConfig: ApplicationConfig = {
+  providers: [
+    provideClientHydration(
+      withEventReplay(),
+      withIncrementalHydration()
+    )
+  ]
+};
+
+En este código:
+
+    provideClientHydration() habilita la hidratación básica
+    withEventReplay() garantiza que no se pierdan los eventos del usuario durante el proceso de hidratación
+    withIncrementalHydration() activa la hidratación incremental
+
+Una vez configurado, Angular automáticamente determinará qué componentes hidratar basándose en la interacción del usuario y en los componentes marcados con @defer.
+
+El papel crucial de la directiva @defer
+
+La directiva @defer juega un papel fundamental en la hidratación incremental. Al marcar componentes con esta directiva, le indicamos a Angular que estos componentes pueden cargarse de manera diferida.
+
+Cuando combinamos @defer con la hidratación incremental, Angular puede:
+
+    Renderizar inicialmente todos los componentes en el servidor
+    Enviar el HTML completo al navegador
+    Hidratar selectivamente solo los componentes con los que el usuario interactúa
+
+Esto significa que partes de la página que el usuario nunca visita (como un footer complejo o secciones ocultas) nunca pasan por el costoso proceso de hidratación, ahorrando recursos valiosos.
+
+Beneficios de la hidratación incremental en proyectos reales
+
+La implementación de la hidratación incremental ofrece múltiples ventajas para nuestras aplicaciones Angular:
+
+    Mejor tiempo de respuesta: Los componentes con los que el usuario interactúa se hidratan prioritariamente
+    Reducción del tiempo total de hidratación: Al no hidratar componentes innecesarios, el proceso completo es más rápido
+    Experiencia de usuario mejorada: Menor tiempo de espera para que la aplicación sea completamente interactiva
+    Optimización de recursos: Uso más eficiente de la CPU y memoria del dispositivo del usuario
+
+Esta técnica es particularmente beneficiosa para aplicaciones de comercio electrónico, donde la velocidad de interacción puede impactar directamente en las tasas de conversión.
+
+Casos de uso ideales
+
+La hidratación incremental brilla especialmente en:
+
+    Tiendas en línea con múltiples secciones y componentes interactivos
+    Aplicaciones con interfaces complejas y muchos componentes independientes
+    Sitios web que necesitan ser rápidos incluso en dispositivos de gama baja
+    Aplicaciones que priorizan la experiencia de usuario y el rendimiento
+
+Es importante recordar que, aunque esta técnica es más beneficiosa cuando se utiliza con Server-Side Rendering, la directiva @defer sigue siendo útil incluso en aplicaciones que no utilizan SSR, ya que optimiza la carga de componentes.
+
+La hidratación incremental representa un avance significativo en la forma en que Angular maneja el renderizado y la interactividad de las aplicaciones. Al implementar esta técnica, podemos ofrecer experiencias más rápidas y eficientes a nuestros usuarios, aprovechando al máximo las capacidades modernas del framework. Te animamos a experimentar con esta característica en tus proyectos y a compartir tus experiencias con la comunidad.
 Para hidratar solo los elementos con los que el usuario está interactuando
+
+
+
+
+
+
+
+
 
 34. Configuración de Server Routing en Angular
 https://platzi.com/cursos/angular-avanzado/optimiza-navegacion-con-server-routing-en-angular/
+
 
 RenderMode.Server
 RenderMode.Client
