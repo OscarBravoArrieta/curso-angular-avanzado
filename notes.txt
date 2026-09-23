@@ -1472,22 +1472,260 @@ Es importante recordar que, aunque esta técnica es más beneficiosa cuando se u
 La hidratación incremental representa un avance significativo en la forma en que Angular maneja el renderizado y la interactividad de las aplicaciones. Al implementar esta técnica, podemos ofrecer experiencias más rápidas y eficientes a nuestros usuarios, aprovechando al máximo las capacidades modernas del framework. Te animamos a experimentar con esta característica en tus proyectos y a compartir tus experiencias con la comunidad.
 Para hidratar solo los elementos con los que el usuario está interactuando
 
-
-
-
-
-
-
-
-
 34. Configuración de Server Routing en Angular
 https://platzi.com/cursos/angular-avanzado/optimiza-navegacion-con-server-routing-en-angular/
 
 
-RenderMode.Server
-RenderMode.Client
-RenderMode.Prerender
-Para habilitar server routing, se crea el archivo app.routes.server.ts y en angular.json se configura la propiedad outputMode con el valor server.
+El Server Routing en Angular representa una evolución significativa en el control que los desarrolladores tienen sobre las estrategias de renderizado. Esta característica experimental permite personalizar cómo se renderizan diferentes rutas de nuestra aplicación, ofreciendo un equilibrio óptimo entre rendimiento, SEO y experiencia de usuario.
+
+¿Qué es el Server Routing en Angular?
+
+El Server Routing es una característica experimental de Angular que permite definir estrategias de renderizado específicas para diferentes rutas de nuestra aplicación. Aunque actualmente se encuentra en fase experimental, es probable que se convierta en una característica estable en próximas versiones debido a su utilidad.
+
+Esta funcionalidad nos brinda la flexibilidad de decidir qué páginas queremos que sean:
+
+    Renderizadas del lado del servidor (Server-Side Rendering)
+    Renderizadas del lado del cliente (Client-Side Rendering)
+    Pre-renderizadas (Static Site Generation)
+
+La principal ventaja es que podemos combinar estas estrategias en una misma aplicación, optimizando cada ruta según sus necesidades específicas.
+
+¿Por qué necesitamos el Server Routing?
+
+Cuando implementamos Server-Side Rendering (SSR) en una aplicación Angular, tradicionalmente todas las páginas siguen esta estrategia. Sin embargo, esto puede no ser ideal para todas las rutas:
+
+    Algunas páginas altamente dinámicas funcionan mejor con Client-Side Rendering
+    Páginas con contenido estático se benefician más del pre-rendering
+    Páginas críticas para SEO necesitan Server-Side Rendering
+
+El Server Routing nos permite elegir específicamente qué estrategia aplicar a cada ruta, en lugar de usar un enfoque único para toda la aplicación.
+
+¿Cómo implementar Server Routing en Angular?
+
+La implementación del Server Routing requiere algunos pasos de configuración. Si estás creando un nuevo proyecto, puedes incluir esta característica desde el inicio agregando la opción --server-routing al comando de creación.
+
+Para proyectos existentes, la configuración es manual pero sencilla:
+
+Paso 1: Crear el archivo de configuración de rutas del servidor
+
+Debemos crear un archivo llamado app.routes.server.ts donde definiremos qué estrategia de renderizado seguirá cada ruta:
+
+export const serverRoutes = [
+  {
+    path: 'locations',
+    rendering: 'client'
+  },
+  {
+    path: 'about',
+    rendering: 'pre-render'
+  },
+  {
+    path: '**',
+    rendering: 'server'
+  }
+];
+
+En este ejemplo:
+
+    La ruta locations utilizará Client-Side Rendering
+    La ruta about será pre-renderizada (Static Site Generation)
+    Cualquier otra ruta utilizará Server-Side Rendering
+
+Paso 2: Configurar el proveedor de Server Routing
+
+Debemos modificar el archivo app.config.server.ts para incluir el proveedor de Server Routing:
+
+import { serverRoutes } from './app.routes.server';
+import { provideServerRouting } from '@angular/ssr';
+
+export const appConfig = {
+  providers: [
+    // Otros proveedores...
+    provideServerRouting(serverRoutes)
+  ]
+};
+
+Paso 3: Configurar el modo de salida
+
+Finalmente, debemos configurar el angular.json para especificar el modo de salida:
+
+{
+  "projects": {
+    "your-project": {
+      "architect": {
+        "build": {
+          "options": {
+            "outputMode": "server"
+          }
+        }
+      }
+    }
+  }
+}
+
+Con esta configuración, ya no es necesario mantener un archivo routes.txt separado para las rutas pre-renderizadas, ya que toda la configuración de renderizado está centralizada en el archivo app.routes.server.ts.
+
+¿Cuándo usar cada estrategia de renderizado?
+
+La elección de la estrategia adecuada para cada ruta depende de varios factores:
+
+Server-Side Rendering
+
+Ideal para:
+
+    Páginas que necesitan buen SEO
+    Contenido que cambia con frecuencia pero necesita indexación
+    Primera carga rápida para mejorar métricas de rendimiento
+
+Client-Side Rendering
+
+Ideal para:
+
+    Páginas con alta interactividad
+    Contenido muy dinámico
+    Rutas que no necesitan SEO, como páginas de login
+    Secciones protegidas o privadas
+
+Pre-rendering (Static Site Generation)
+
+Ideal para:
+
+    Páginas con contenido estático
+    Secciones informativas como "Acerca de", "Términos y condiciones"
+    Contenido que cambia con poca frecuencia
+
+ Un caso práctico mencionado en la clase es la página de login. Esta ruta generalmente no necesita ser optimizada para motores de búsqueda, por lo que podría configurarse para usar Client-Side Rendering, ahorrando recursos del servidor.
+
+ El Server Routing en Angular nos permite crear aplicaciones más eficientes y optimizadas, adaptando la estrategia de renderizado a las necesidades específicas de cada sección de nuestra aplicación. Aunque sea una característica experimental, su potencial para mejorar el rendimiento y la experiencia de usuario la convierte en una herramienta valiosa para los desarrolladores de Angular.
+
+ https://www.youtube.com/watch?v=pOZzzdXgx-o&t=290s
+ https://platzi.com/cursos/angular-avanzado/maximiza-rendimiento-con-zoneless-en-angular/
+
+ La evolución de Angular hacia un modelo de reactividad basado en signals representa un cambio fundamental en cómo desarrollamos aplicaciones modernas. Este nuevo enfoque no solo mejora el rendimiento, sino que también simplifica la detección de cambios, permitiendo crear aplicaciones más eficientes y con mejor experiencia de usuario. Exploraremos cómo implementar aplicaciones "Zoneless" en Angular y los beneficios que esto conlleva para nuestros proyectos.
+
+¿Qué son las Zoneless Applications en Angular?
+
+Las Zoneless Applications (aplicaciones sin Zone.js) representan un nuevo paradigma en Angular donde se prescinde de Zone.js como mecanismo de detección de cambios. Este cambio es posible gracias al nuevo modelo de reactividad basado en signals que Angular ha implementado.
+
+Angular ahora ofrece un ecosistema completo de herramientas reactivas:
+
+    Signal
+    Computed signal
+    Effect
+    RX resource
+    To signal
+    Query signals
+    Input signals
+    Output signals
+
+El beneficio principal de migrar a una aplicación Zoneless es el rendimiento en runtime. Al utilizar signals, Angular implementa una reactividad granular similar a la que ofrecen frameworks como SolidJS, Vue o Svelte, donde solo se actualizan los componentes que realmente cambiaron, sin necesidad de recorrer todo el árbol DOM como lo hacía anteriormente.
+
+Requisitos para implementar Zoneless Applications
+
+Antes de migrar a una aplicación sin Zone.js, debemos asegurarnos de cumplir con dos requisitos fundamentales:
+
+    Tener toda la aplicación basada en signals: Es necesario que toda la reactividad de nuestra aplicación esté implementada utilizando la API de signals.
+
+    Configurar todos los componentes con OnPush: Como medida de seguridad adicional, debemos configurar la estrategia de detección de cambios OnPush en todos nuestros componentes.
+
+@Component({
+  selector: 'app-home',
+  standalone: true,
+  imports: [CommonModule],
+  templateUrl: './home.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
+})
+export class HomeComponent {
+  // Componente con OnPush
+}
+
+Es importante destacar que esta funcionalidad aún está en fase experimental, por lo que se recomienda probarla en una rama separada antes de implementarla en producción.
+
+Implementando OnPush en todos los componentes
+
+El primer paso para preparar nuestra aplicación es configurar todos los componentes con la estrategia de detección de cambios OnPush. Aunque actualmente no existe una migración automática para esto, podemos hacerlo manualmente:
+
+    Importar ChangeDetectionStrategy en cada componente:
+
+import { ChangeDetectionStrategy } from '@angular/core';
+
+    Agregar la configuración en el decorador del componente:
+
+@Component({
+  // Otras configuraciones...
+  changeDetection: ChangeDetectionStrategy.OnPush
+})
+
+Para componentes futuros, podemos configurar que se creen automáticamente con OnPush modificando el archivo angular.json:
+
+"schematics": {
+  "@schematics/angular:component": {
+    "changeDetection": "OnPush",
+    "standalone": true,
+    "skipTests": true
+  }
+}
+
+Una vez configurados todos los componentes, debemos verificar que la aplicación siga funcionando correctamente antes de proceder con la eliminación de Zone.js.
+
+Habilitando una aplicación Zoneless
+
+Para habilitar una aplicación sin Zone.js, debemos seguir estos pasos:
+
+1. Configurar la aplicación para funcionar sin Zone.js
+
+En el archivo app.config.ts, debemos importar y utilizar la función provideZonelessChangeDetection:
+
+import { ApplicationConfig } from '@angular/core';
+import { provideRouter } from '@angular/router';
+import { routes } from './app.routes';
+import { provideHttpClient } from '@angular/common/http';
+import { provideZonelessChangeDetection } from '@angular/core/rxjs-interop';
+
+export const appConfig: ApplicationConfig = {
+  providers: [
+    provideRouter(routes),
+    provideHttpClient(),
+    provideZonelessChangeDetection()
+  ]
+};
+
+2. Eliminar Zone.js de los polyfills
+
+Debemos eliminar Zone.js de los polyfills en el archivo angular.json:
+
+"polyfills": [
+  // Eliminar "zone.js" de aquí
+]
+
+También debemos revisar y eliminar Zone.js de los polyfills en la configuración de pruebas si los tenemos.
+
+3. Desinstalar Zone.js como dependencia
+
+Finalmente, podemos desinstalar Zone.js como dependencia del proyecto:
+
+npm uninstall zone.js
+
+Después de estos cambios, debemos verificar nuevamente que nuestra aplicación siga funcionando correctamente. Si hemos migrado correctamente a signals y configurado OnPush en todos los componentes, la aplicación debería funcionar sin problemas.
+
+Consideraciones importantes sobre Zoneless Applications
+
+Aunque las aplicaciones sin Zone.js ofrecen mejoras significativas en rendimiento, hay algunas consideraciones importantes:
+
+    Testing: Actualmente, las APIs de testing de Angular todavía dependen de Zone.js. Si utilizamos pruebas unitarias o de integración, es posible que necesitemos mantener Zone.js hasta que las librerías de testing se actualicen.
+
+    Funcionalidad experimental: Al ser una característica experimental, puede haber cambios en futuras versiones de Angular.
+
+    Migración gradual: Podemos prepararnos para esta migración de forma gradual:
+        Migrar toda la reactividad a signals
+        Configurar todos los componentes con OnPush
+        Habilitar la aplicación sin Zone.js cuando estemos seguros de que todo funciona correctamente
+
+La reactividad granular comenzará a funcionar tan pronto como implementemos signals y OnPush, incluso antes de eliminar Zone.js completamente.
+
+La evolución hacia aplicaciones Zoneless representa un paso importante en la madurez de Angular como framework, acercándose a modelos de reactividad más eficientes y modernos que ya utilizan otros frameworks populares. Esta transición nos permite crear aplicaciones más rápidas y con mejor experiencia de usuario, aprovechando al máximo las capacidades de la web moderna.
+
+¿Has comenzado a implementar signals en tus proyectos de Angular? Comparte tu experiencia en los comentarios y cuéntanos cómo ha mejorado el rendimiento de tus aplicaciones.
 
 
 
@@ -1495,7 +1733,7 @@ Para habilitar server routing, se crea el archivo app.routes.server.ts y en angu
 
 
  Angular 20: Optimizaciones de Performance que DEBES Implementar
- https://www.youtube.com/watch?v=pOZzzdXgx-o&t=290s
+ 
  
  En app.config
  - provideZoneChangeDetection()
